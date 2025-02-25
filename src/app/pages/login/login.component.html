@@ -1,0 +1,21 @@
+
+<div class="min-vh-100 d-flex align-items-center" >
+  <mat-card class="container p-4" appearance="outlined" style="max-width: 400px;">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <h1>Zaloguj się</h1>
+        <mat-form-field class="w-100 mb-2" >
+          <mat-label>Favorite food</mat-label>
+          <input matInput formControlName="email">
+        </mat-form-field>
+      
+        <mat-form-field class="w-100 mb-2" >
+            <mat-label>Favorite food</mat-label>
+            <input matInput formControlName="password">
+          </mat-form-field>
+          <button mat-flat-button color="primary">Login</button>
+    
+    
+      </form>
+  </mat-card>
+
+</div>
