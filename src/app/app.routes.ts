@@ -4,6 +4,7 @@ import { StartComponent } from './pages/start/start.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { dashboardRoutes } from './pages/dashboard/dashboard.routes';
 
 export const routes: Routes = [
     {
@@ -15,7 +16,8 @@ export const routes: Routes = [
       {
         path: AppRouting.dashboard,
         data: { breadcrumb: 'Panel glowny' },
-        component: DashboardComponent
+        component: DashboardComponent,
+        children: dashboardRoutes
       },
       {
         path: AppRouting.login,

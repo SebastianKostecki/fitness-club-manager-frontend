@@ -4,18 +4,18 @@
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
         <h1>Zaloguj się</h1>
         <mat-form-field class="w-100 mb-2" >
-          <mat-label>Favorite food</mat-label>
+          <mat-label>Nazwa Użytkownia</mat-label>
           <input matInput formControlName="email">
         </mat-form-field>
       
         <mat-form-field class="w-100 mb-2" >
-            <mat-label>Favorite food</mat-label>
+            <mat-label>Hasło</mat-label>
             <input matInput formControlName="password">
-          </mat-form-field>
-          <button mat-flat-button color="primary">Login</button>
+        </mat-form-field>
+        <button mat-flat-button color="primary">Login</button>
     
     
-      </form>
+    </form>
   </mat-card>
 
 </div>

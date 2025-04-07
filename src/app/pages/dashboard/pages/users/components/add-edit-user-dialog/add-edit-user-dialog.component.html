@@ -1,0 +1,31 @@
+
+<div class="p-4">
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <h1>Dodaj użytkownika</h1>
+          <mat-form-field class="w-100 mb-2" >
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="Email">
+          </mat-form-field>
+        
+          <mat-form-field class="w-100 mb-2" >
+              <mat-label>Hasło</mat-label>
+              <input matInput formControlName="Password">
+          </mat-form-field>
+
+          <mat-form-field class="w-100 mb-2" >
+            <mat-label>Rola</mat-label>
+            <input matInput formControlName="Role">
+        </mat-form-field>
+
+        <mat-form-field class="w-100 mb-2" >
+            <mat-label>Nazwa użytkownika</mat-label>
+            <input matInput formControlName="Username">
+        </mat-form-field>
+
+          <button mat-flat-button color="primary" [disabled]="(addLoading$ | async) || formGroup.invalid">Dodaj</button>
+      
+      
+      </form>
+  
+  
+  </div>
