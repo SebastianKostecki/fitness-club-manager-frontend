@@ -69,10 +69,21 @@ export class UsersComponent implements OnInit{
     // });
   }
 
-  onDelete(): void {
+  delete(userId: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
     dialogRef.afterClosed().subscribe((value)=>{
-      console.log(value);
+      if (value == true) {
+        this.usersService.deleteUser(userId).subscribe();
+      }
+    })
+  }
+
+  edit(user: any): void {
+    const dialogRef = this.dialog.open(AddEditUserDialogComponent, {
+      data: {
+        user: user,
+        isEdit: true
+      }
     })
   }
 

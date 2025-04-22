@@ -40,11 +40,18 @@ export class DashboardComponent {
       icon: 'manage_accounts',
       path: DashboardRouting.users,
     },
+    {
+      name: "Sale",
+      icon: "",
+      path: DashboardRouting.rooms,
+    }
     
   ];
 
   protected getIsHomePage(sidenavItem: any): boolean {
     return sidenavItem.path === DashboardRouting.home;
   }
+
+
 
 }

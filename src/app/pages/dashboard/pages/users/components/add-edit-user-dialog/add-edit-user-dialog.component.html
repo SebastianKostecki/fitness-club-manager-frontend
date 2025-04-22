@@ -1,7 +1,7 @@
 
 <div class="p-4">
       <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-          <h1>Dodaj użytkownika</h1>
+          <h1>{{data?.isEdit? "Edytuj": "Dodaj"}} użytkownika</h1>
           <mat-form-field class="w-100 mb-2" >
             <mat-label>Email</mat-label>
             <input matInput formControlName="Email">
@@ -22,7 +22,9 @@
             <input matInput formControlName="Username">
         </mat-form-field>
 
-          <button mat-flat-button color="primary" [disabled]="(addLoading$ | async) || formGroup.invalid">Dodaj</button>
+          <button mat-flat-button color="primary" [disabled]="(addLoading$ | async) || formGroup.invalid">
+            {{data?.isEdit? "Edytuj": "Dodaj"}}
+          </button>
       
       
       </form>
