@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { AddEditUserDialogComponent } from '../users/components/add-edit-user-dialog/add-edit-user-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddEditRoomDialogComponent } from './components/add-edit-room-dialog/add-edit-room-dialog.component';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-rooms',
@@ -65,22 +66,22 @@ export class RoomsComponent implements OnInit{
       // });
     }
 
-  delete(userId: number): void {
-      // const dialogRef = this.dialog.open(ConfirmDialogComponent);
-      // dialogRef.afterClosed().subscribe((value)=>{
-      //   if (value == true) {
-      //     this.usersService.deleteUser(userId).subscribe();
-      //   }
-      // })
+  delete(roomId: number): void {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent);
+      dialogRef.afterClosed().subscribe((value)=>{
+        if (value == true) {
+          this.roomsService.deleteRoom(roomId).subscribe();
+        }
+      })
     }
   
-  edit(user: any): void {
-    // const dialogRef = this.dialog.open(AddEditUserDialogComponent, {
-    //   data: {
-    //     user: user,
-    //     isEdit: true
-    //   }
-    // })
+  edit(room: any): void {
+    const dialogRef = this.dialog.open(AddEditRoomDialogComponent, {
+      data: {
+        room: room,
+        isEdit: true
+      }
+    })
   }
     
 

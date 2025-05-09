@@ -40,10 +40,21 @@ export class AddEditRoomDialogComponent implements OnInit {
       Location: ["", [Validators.required]]
     })
 
+    if (this.data?.isEdit) {
+      this.formGroup.patchValue(this.data.room)
+    }
+
     this.roomsService.addSuccess$.subscribe((addSuccess)=>{
       if (addSuccess == true){
         this.dialogRef.close();
         this.roomsService.addSuccess.next(false);
+      }
+    })
+
+    this.roomsService.editSuccess$.subscribe((editSuccess)=>{
+      if (editSuccess == true){
+        this.dialogRef.close();
+        this.roomsService.editSuccess.next(false);
       }
     })
   }
@@ -53,7 +64,7 @@ export class AddEditRoomDialogComponent implements OnInit {
     console.log(formValue);
     if (this.data?.isEdit){
       const roomID = this.data?.room?.RoomID;
-      // this.roomsService.ed 
+      this.roomsService.editRoom(roomID, formValue).subscribe();
     }
     else {
       this.roomsService.addRoom(formValue).subscribe();
