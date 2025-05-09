@@ -1,0 +1,27 @@
+<div class="p-4">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <h1>{{data?.isEdit? "Edytuj": "Dodaj"}} Sale</h1>
+        <mat-form-field class="w-100 mb-2" >
+          <mat-label>Sala</mat-label>
+          <input matInput formControlName="RoomName">
+        </mat-form-field>
+      
+        <mat-form-field class="w-100 mb-2" >
+            <mat-label>Pojemność</mat-label>
+            <input matInput formControlName="Capacity">
+        </mat-form-field>
+
+        <mat-form-field class="w-100 mb-2" >
+          <mat-label>Lokalizacja</mat-label>
+          <input matInput formControlName="Location">
+      </mat-form-field>
+
+        <button mat-flat-button color="primary" [disabled]="(addLoading$ | async) || formGroup.invalid">
+          {{data?.isEdit? "Edytuj": "Dodaj"}}
+        </button>
+    
+    
+    </form>
+
+
+</div>

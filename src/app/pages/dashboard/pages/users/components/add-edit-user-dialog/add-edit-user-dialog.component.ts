@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './add-edit-user-dialog.component.html',
   styleUrl: './add-edit-user-dialog.component.scss'
 })
-export class AddEditUserDialogComponent {
+export class AddEditUserDialogComponent implements OnInit{
   formGroup!:FormGroup;
   addLoading$ = this.usersService.addLoading$;
   

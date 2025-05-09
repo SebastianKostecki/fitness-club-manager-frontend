@@ -53,8 +53,8 @@ export class UsersService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url= 'http://localhost:8080/users';
-    return this.http.get<any[]>(url).pipe(
+    const url= 'http://localhost:8080/users'; 
+    return this.http.get<any[]>(url).pipe(    
       tap((res)=>{
         this.items.next(res);
         this.success.next(true);

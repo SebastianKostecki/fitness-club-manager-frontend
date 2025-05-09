@@ -3,6 +3,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../shared/services/auth.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class LoginComponent implements OnInit{
   formGroup!:FormGroup;
 
- constructor(private fb:FormBuilder){}
+
+ constructor(private authService: AuthService, private fb:FormBuilder){}
 
  ngOnInit(){
   this.formGroup=this.fb.group({
@@ -34,6 +36,7 @@ export class LoginComponent implements OnInit{
  onSubmit(){
   const formValue=this.formGroup.value
   console.log(formValue);
+  this.authService.login(formValue).subscribe();
   
  }
 
