@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, tap } from "rxjs";
 
 
@@ -11,7 +12,7 @@ export class AuthService {
 
   public jwt$: Observable<string | null> = this.jwt.asObservable();
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private router:Router){}
 
   login(login: any){
     const url = 'http://localhost:8080/login';
@@ -19,8 +20,20 @@ export class AuthService {
       tap((res: {jwt:string})=>{
         console.log(res)
         this.jwt.next(res.jwt)
+        localStorage.setItem('jwt', res.jwt)
+        this.router.navigate(['/dashboard']);
       })
     )
   }
+
+  getInitJwt(): void {
+    const value = localStorage.getItem('jwt');
+    if (value){
+      this.jwt.next(value)
+    }
+  }
+
+
+
 }
 

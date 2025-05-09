@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,12 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'fitness-club-manager-frontend';
+
+  constructor(private authService: AuthService){};
+
+  ngOnInit(): void {
+    this.authService.getInitJwt();
+  }
 }
+
+
