@@ -18,12 +18,19 @@
     </mat-drawer>
   
     <div class="min-vh-100 ">
-        <mat-toolbar color="primary">
-            <button mat-icon-button  (click)="drawer.toggle()">
+        <mat-toolbar color="primary" style="display: flex; align-items: center;">
+            <button mat-icon-button (click)="drawer.toggle()">
               <mat-icon>menu</mat-icon>
             </button>
-            <span>My App</span>
-        </mat-toolbar>
+          
+            <span style="margin-left: 8px;">My App</span>
+          
+            <span style="flex: 1 1 auto;"></span>
+          
+            <button mat-icon-button (click)="onLogout()">
+              <mat-icon>logout</mat-icon>
+            </button>
+          </mat-toolbar>
         <div class="p-3">
             <mat-card class="p-4">
                 <router-outlet></router-outlet>

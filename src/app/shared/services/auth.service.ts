@@ -33,6 +33,12 @@ export class AuthService {
     }
   }
 
+  logout(): void {
+    this.jwt.next(null);
+    localStorage.removeItem('jwt');
+    this.router.navigate(['/login']);
+  }
+
 
 
 }

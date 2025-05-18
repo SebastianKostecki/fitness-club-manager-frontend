@@ -8,6 +8,7 @@ import {MatCardModule} from '@angular/material/card';
 import { DashboardRouting } from './utils/dashboard-routing.enum';
 import {MatListModule} from '@angular/material/list';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../shared/services/auth.service';
 
 
 @Component({
@@ -29,6 +30,9 @@ import { RouterModule } from '@angular/router';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+
+  constructor(private authService: AuthService) {}
+  
   protected links: any[] = [
     {
       name: 'Domowa',
@@ -42,9 +46,15 @@ export class DashboardComponent {
     },
     {
       name: "Sale",
-      icon: "",
+      icon: "domain",
       path: DashboardRouting.rooms,
+    },
+    {
+      name: "Sprzęt",
+      icon: "construction",
+      path: DashboardRouting.equipments
     }
+
     
   ];
 
@@ -52,6 +62,9 @@ export class DashboardComponent {
     return sidenavItem.path === DashboardRouting.home;
   }
 
+  onLogout(): void {
+    this.authService.logout();
+  }
 
 
 }

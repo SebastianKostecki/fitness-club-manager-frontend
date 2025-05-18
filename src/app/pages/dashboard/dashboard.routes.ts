@@ -4,6 +4,7 @@ import { HomeComponent } from "./pages/home/home.component";
 import { Routes } from "@angular/router";
 import { UsersComponent } from "./pages/users/users.component";
 import { RoomsComponent } from "./pages/rooms/rooms.component";
+import { EquipmentsComponent } from "./pages/equipments/equipments.component";
 
 export const dashboardRoutes: Routes = [
     {
@@ -25,6 +26,11 @@ export const dashboardRoutes: Routes = [
         path: DashboardRouting.rooms,
         data: {breadcrumb: 'Sale'},
         component: RoomsComponent
+    },
+    {
+        path: DashboardRouting.equipments,
+        data: {breadcumb: 'Sprzęt'},
+        component: EquipmentsComponent
     }
 
 ];

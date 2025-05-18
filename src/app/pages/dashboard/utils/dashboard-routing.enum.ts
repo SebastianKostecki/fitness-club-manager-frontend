@@ -1,5 +1,6 @@
 export enum DashboardRouting {
     home = 'home',
     users = 'users',
-    rooms = 'rooms'
+    rooms = 'rooms',
+    equipments = 'equipments'
 }
