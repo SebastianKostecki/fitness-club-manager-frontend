@@ -48,11 +48,24 @@ export class DashboardComponent {
       name: "Sale",
       icon: "domain",
       path: DashboardRouting.rooms,
+      color: 'primary'
     },
     {
       name: "Sprzęt",
       icon: "construction",
       path: DashboardRouting.equipments
+    },
+    {
+      name:"Sprzęt w sali",
+      path: DashboardRouting.roomsEquipments
+    },
+    {
+      name:"Zajęcia",
+      path: DashboardRouting.fitnessClasses
+    },
+    {
+     name: 'Rezerwacje',
+     path: DashboardRouting.reservations 
     }
 
     

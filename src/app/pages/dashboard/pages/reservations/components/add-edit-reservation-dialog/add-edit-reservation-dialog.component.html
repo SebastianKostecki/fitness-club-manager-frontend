@@ -1,0 +1,32 @@
+<div class="p-4">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <h1>{{ data?.isEdit ? 'Edytuj' : 'Dodaj' }} rezerwację</h1>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Użytkownik</mat-label>
+      <mat-select formControlName="UserID">
+        <mat-option *ngFor="let user of users" [value]="user.UserID">
+          {{ user.Username }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Zajęcia</mat-label>
+      <mat-select formControlName="ClassID">
+        <mat-option *ngFor="let cls of classes" [value]="cls.ClassID">
+          {{ cls.Title }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Status</mat-label>
+      <input matInput formControlName="Status" />
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" [disabled]="(addLoading$ | async) || formGroup.invalid">
+      {{ data?.isEdit ? 'Edytuj' : 'Dodaj' }}
+    </button>
+  </form>
+</div>

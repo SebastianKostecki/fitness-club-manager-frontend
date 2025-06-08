@@ -1,7 +1,7 @@
 import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { DAYS_IN_WEEK, CalendarSchedulerEventAction, CalendarSchedulerEvent, CalendarSchedulerViewComponent, SchedulerViewDay, SchedulerViewHour, SchedulerViewHourSegment, subPeriod, addPeriod, endOfPeriod, startOfPeriod, SchedulerEventTimesChangedEvent,  SchedulerDateFormatter } from 'angular-calendar-scheduler';
 import { endOfDay, addMonths, addHours, startOfDay } from 'date-fns';
-import { Subject } from 'rxjs';
+import { map, Observable, Subject, tap } from 'rxjs';
 import {
     CalendarView,
     CalendarDateFormatter,
@@ -13,6 +13,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EventColor } from 'calendar-utils';
 import { CalendarHeaderComponent } from '../../../../shared/components/calendar/calendar-header.component';
+import { FitnessClassesService } from '../fitness-classes/services/fitness-classes.service';
+import { ReservationsService } from '../reservations/services/reservations.service';
+import { MatCardModule } from '@angular/material/card';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -36,7 +39,8 @@ const colors: Record<string, EventColor> = {
     FormsModule,
     CommonModule,
     CalendarModule,
-    CalendarHeaderComponent
+    CalendarHeaderComponent,
+    MatCardModule
   ],
   providers: [{
         provide: CalendarDateFormatter,
@@ -45,11 +49,17 @@ const colors: Record<string, EventColor> = {
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent  {
+export class HomeComponent implements OnInit  {
+  
   view: CalendarView = CalendarView.Month;
-
+  items = this.fitnessClassesService.items$.pipe(
+    tap((value)=>{
+      console.log(value)
+    })
+  ).subscribe()
   viewDate: Date = new Date();
 
+  events$: Observable<CalendarEvent[]> = this.reservationsService.schedulerItems$ 
   events: CalendarEvent[] = [
     {
       title: 'Click me',
@@ -61,7 +71,49 @@ export class HomeComponent  {
       color: colors['blue'],
       start: new Date(),
     },
+    
   ];
+  closestEvent$: Observable<CalendarEvent | null> = this.events$.pipe(
+  map(events => {
+    const now = new Date();
+   
+    const futureEvents = events.filter(event => new Date(event.start) > now);
+
+    if (futureEvents.length === 0) {
+      return null; 
+    }
+
+    return futureEvents.reduce((closest, event) => {
+      return new Date(event.start) < new Date(closest.start) ? event : closest;
+    });
+  }),
+  tap(value => {
+    console.log('Closest event:', value);
+  })
+);
+pastEventsCount$: Observable<number> = this.events$.pipe(
+  map(events => {
+    const now = new Date();
+    return events
+      .filter(event => event.end) // bierz tylko te z datą końca
+      .filter(event => new Date(event.end!) < now) // ! bo po poprzednim filtrze już jest na pewno
+      .length;
+  }),
+  tap(count => {
+    console.log('Liczba odbytych zajęć:', count);
+  })
+);
+
+
+
+  constructor(
+    private reservationsService: ReservationsService,
+    private fitnessClassesService: FitnessClassesService
+  ){}
+
+  ngOnInit(): void {
+    this.reservationsService.getReservations().subscribe()
+  }
 
   eventClicked({ event }: { event: CalendarEvent }): void {
     console.log('Event clicked', event);

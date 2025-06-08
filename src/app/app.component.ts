@@ -19,6 +19,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.authService.getInitJwt();
+    this.authService.getInitRole();
   }
 }
 

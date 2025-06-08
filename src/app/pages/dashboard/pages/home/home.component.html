@@ -1,8 +1,19 @@
+<mat-card class="mb-3 user-card">
+  <mat-card-title>Jan Kowalski</mat-card-title>
+  <mat-card-subtitle>Miłego dnia</mat-card-subtitle>
+  <dl>
+    <dt>Najbliższy trening</dt>
+    <dd>{{(closestEvent$|async)?.title}} ({{(closestEvent$|async)?.start | date:"dd.MM.yyyy"}})</dd>
+    <dt>Ilość odbytych treningów</dt>
+    <dd class="mb-0">{{pastEventsCount$| async}}</dd>
+  </dl>
+</mat-card>
 
 <mwl-calendar-header [(view)]="view" [(viewDate)]="viewDate">
 </mwl-calendar-header>
 
-<div [ngSwitch]="view">
+<ng-container *ngIf="(events$ | async) as events">
+  <div [ngSwitch]="view">
   <mwl-calendar-month-view
     *ngSwitchCase="'month'"
     [viewDate]="viewDate"
@@ -25,4 +36,5 @@
     (eventClicked)="eventClicked($event)"
   >
   </mwl-calendar-day-view>
-</div>
+  </div>
+</ng-container>

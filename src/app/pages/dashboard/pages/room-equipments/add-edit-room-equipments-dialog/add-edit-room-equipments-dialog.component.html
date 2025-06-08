@@ -1,0 +1,32 @@
+<div class="p-4">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <h1>{{ data?.isEdit ? 'Edytuj' : 'Dodaj' }} przypisanie sprzętu do sali</h1>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Sala</mat-label>
+      <mat-select formControlName="RoomID" [disabled]="data?.isEdit">
+        <mat-option *ngFor="let room of rooms" [value]="room.RoomID">
+          {{ room.RoomName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Sprzęt</mat-label>
+      <mat-select formControlName="EquipmentID" [disabled]="data?.isEdit">
+        <mat-option *ngFor="let eq of equipments" [value]="eq.EquipmentID">
+          {{ eq.EquipmentName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Ilość</mat-label>
+      <input matInput formControlName="Quantity" type="number" />
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" [disabled]="formGroup.invalid || (addLoading$ | async)">
+      {{ data?.isEdit ? 'Edytuj' : 'Dodaj' }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,42 @@
+<div class="p-4">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <h1>{{ data?.isEdit ? 'Edytuj' : 'Dodaj' }} zajęcia</h1>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Tytuł</mat-label>
+      <input matInput formControlName="Title" />
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Data rozpoczęcia</mat-label>
+      <input matInput [matDatepicker]="startPicker" formControlName="StartTime" />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Data zakończenia</mat-label>
+      <input matInput [matDatepicker]="endPicker" formControlName="EndTime" />
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Pojemność</mat-label>
+      <input matInput type="number" formControlName="Capacity" />
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-2">
+      <mat-label>Status</mat-label>
+      <input matInput formControlName="Status" />
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="formGroup.invalid || (addLoading$ | async)"
+    >
+      {{ data?.isEdit ? 'Edytuj' : 'Dodaj' }}
+    </button>
+  </form>
+</div>
