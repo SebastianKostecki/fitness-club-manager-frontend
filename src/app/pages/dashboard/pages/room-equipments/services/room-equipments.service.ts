@@ -40,7 +40,7 @@ export class RoomEquipmentsService {
   getRoomEquipments() {
     this.loading.next(true);
     this.error.next(null);
-    const url = 'http://localhost:8080/room-equipment';
+    const url = 'https://fitness-club-manager-backend.onrender.com/room-equipment';
     return this.http.get<any[]>(url).pipe(
       tap((res) => {
         this.items.next(res);
@@ -60,7 +60,7 @@ export class RoomEquipmentsService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'http://localhost:8080/room-equipment';
+    const url = 'https://fitness-club-manager-backend.onrender.com/room-equipment';
     return this.http.post(url, data).pipe(
       tap(() => {
         this.addSuccess.next(true);
@@ -81,7 +81,7 @@ export class RoomEquipmentsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = `http://localhost:8080/room-equipment/${roomId}/${equipmentId}`;
+    const url = `https://fitness-club-manager-backend.onrender.com/room-equipment/${roomId}/${equipmentId}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.deleteSuccess.next(true);
@@ -102,7 +102,7 @@ export class RoomEquipmentsService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = `http://localhost:8080/room-equipment/${roomId}/${equipmentId}`;
+    const url = `https://fitness-club-manager-backend.onrender.com/room-equipment/${roomId}/${equipmentId}`;
     return this.http.put(url, updated).pipe(
       tap(() => {
         this.editSuccess.next(true);

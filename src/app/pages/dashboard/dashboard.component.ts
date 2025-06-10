@@ -48,7 +48,6 @@ export class DashboardComponent {
       name: "Sale",
       icon: "domain",
       path: DashboardRouting.rooms,
-      color: 'primary'
     },
     {
       name: "Sprzęt",

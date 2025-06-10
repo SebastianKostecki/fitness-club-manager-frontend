@@ -19,7 +19,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router:Router){}
 
   login(login: any){
-    const url = 'http://localhost:8080/login';
+    const url = 'https://fitness-club-manager-backend.onrender.com/login';
     return this.http.post<{jwt:string; role:string}>(url, login).pipe(
       tap((res: {jwt:string; role:string})=>{
         console.log(res)

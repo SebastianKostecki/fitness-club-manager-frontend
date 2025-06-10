@@ -47,7 +47,7 @@ export class FitnessClassesService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = 'http://localhost:8080/classes';
+    const url = 'https://fitness-club-manager-backend.onrender.com/classes';
     return this.http.get<any[]>(url).pipe(
       tap((res) => {
         this.items.next(res);
@@ -66,7 +66,7 @@ export class FitnessClassesService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'http://localhost:8080/classes';
+    const url = 'https://fitness-club-manager-backend.onrender.com/classes';
     return this.http.post(url, fitnessClass).pipe(
       tap((res) => {
         this.addSuccess.next(true);
@@ -85,7 +85,7 @@ export class FitnessClassesService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = 'http://localhost:8080/classes/' + classId;
+    const url = 'https://fitness-club-manager-backend.onrender.com/classes/' + classId;
     return this.http.delete(url).pipe(
       tap((res) => {
         this.deleteSuccess.next(true);
@@ -104,7 +104,7 @@ export class FitnessClassesService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = 'http://localhost:8080/classes/' + classId;
+    const url = 'https://fitness-club-manager-backend.onrender.com/classes/' + classId;
     return this.http.put(url, fitnessClass).pipe(
       tap((res) => {
         this.editSuccess.next(true);

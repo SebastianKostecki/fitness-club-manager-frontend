@@ -77,7 +77,7 @@ export class ReservationsService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = 'http://localhost:8080/reservations';
+    const url = 'https://fitness-club-manager-backend.onrender.com/reservations';
     return this.http.get<any[]>(url).pipe(
       tap(res => {
         console.log('Dane z backendu:', res);
@@ -96,7 +96,7 @@ export class ReservationsService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'http://localhost:8080/reservations';
+    const url = 'https://fitness-club-manager-backend.onrender.com/reservations';
     return this.http.post(url, reservation).pipe(
       tap(() => {
         this.addSuccess.next(true);
@@ -114,7 +114,7 @@ export class ReservationsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = `http://localhost:8080/reservations/${reservationId}`;
+    const url = `https://fitness-club-manager-backend.onrender.com/reservations/${reservationId}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.deleteSuccess.next(true);
@@ -132,7 +132,7 @@ export class ReservationsService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = `http://localhost:8080/reservations/${reservationId}`;
+    const url = `https://fitness-club-manager-backend.onrender.com/reservations/${reservationId}`;
     return this.http.put(url, reservation).pipe(
       tap(() => {
         this.editSuccess.next(true);

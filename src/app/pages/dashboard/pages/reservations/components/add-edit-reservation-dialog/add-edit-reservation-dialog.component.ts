@@ -49,8 +49,8 @@ export class AddEditReservationDialogComponent implements OnInit {
       this.formGroup.patchValue(this.data.reservation);
     }
 
-    this.http.get<any[]>('http://localhost:8080/users').subscribe((users) => (this.users = users));
-    this.http.get<any[]>('http://localhost:8080/classes').subscribe((classes) => (this.classes = classes));
+    this.http.get<any[]>('https://fitness-club-manager-backend.onrender.com/users').subscribe((users) => (this.users = users));
+    this.http.get<any[]>('https://fitness-club-manager-backend.onrender.com/classes').subscribe((classes) => (this.classes = classes));
 
     this.reservationsService.addSuccess$.subscribe((success) => {
       if (success) {

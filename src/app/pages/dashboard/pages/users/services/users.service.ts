@@ -53,7 +53,7 @@ export class UsersService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url= 'http://localhost:8080/users'; 
+    const url= 'https://fitness-club-manager-backend.onrender.com/users'; 
     return this.http.get<any[]>(url).pipe(    
       tap((res)=>{
         this.items.next(res);
@@ -76,7 +76,7 @@ export class UsersService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'http://localhost:8080/users';
+    const url = 'https://fitness-club-manager-backend.onrender.com/users';
     return this.http.post(url, user).pipe(
       tap((res)=>{
         this.addSuccess.next(true);
@@ -99,7 +99,7 @@ export class UsersService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = 'http://localhost:8080/users/' + userId;
+    const url = 'https://fitness-club-manager-backend.onrender.com/users/' + userId;
     return this.http.delete(url).pipe(
       tap((res)=>{
         this.deleteSuccess.next(true);
@@ -122,7 +122,7 @@ export class UsersService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = 'http://localhost:8080/users/' + userId;
+    const url = 'https://fitness-club-manager-backend.onrender.com/users/' + userId;
     return this.http.put(url, user).pipe(
       tap((res)=>{
         this.editSuccess.next(true);
