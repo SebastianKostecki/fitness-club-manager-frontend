@@ -1,2 +1,27 @@
-<p>start works!</p>
-<button (click)="goToLogin()">logowanie</button>
+<header style="background: #3f51b5; color: #fff; padding: 20px 0; text-align: center; font-weight: bold; font-size: 2rem; letter-spacing: 1px;">
+  Fitness Club Manager
+</header>
+
+<main style="flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+  <div style="max-width: 400px; width: 100%; text-align: center;">
+    <mat-card style="background: #3f51b5; color: #fff;">
+      <mat-card-title>Witamy w Fitness Club Manager!</mat-card-title>
+      <mat-card-content>
+        <p>Zarządzaj swoim klubem fitness w nowoczesny, szybki i wygodny sposób. Nasza aplikacja umożliwia rezerwację sal, zapisy na zajęcia grupowe oraz dostęp do aktualnego grafiku wydarzeń. Zarejestruj się lub zaloguj, aby mieć dostęp do wszystkich funkcji, śledzić swoje rezerwacje i korzystać z oferty klubu na własnych zasadach.</p>
+      </mat-card-content>
+    </mat-card>
+    <div style="margin-top: 32px; display: flex; flex-direction: column; gap: 16px; align-items: center;">
+      <button mat-flat-button color="primary" (click)="goToLogin()">Logowanie</button>
+      <button mat-flat-button color="accent" (click)="goToRegister()">Rejestracja</button>
+    </div>
+  </div>
+</main>
+
+<footer style="background: #3f51b5; color: #fff; padding: 20px 0; text-align: center; margin-top: 48px; font-size: 1rem; flex-shrink: 0;">
+  <div>&copy; 2025 Fitness Club Manager. Wszelkie prawa zastrzeżone.</div>
+  <div>Kontakt: <a href="mailto:support@fitnessclub.com" style="color: #fff; text-decoration: underline;">support&#64;fitnessclub.com</a></div>
+  <div style="margin-top: 8px;">
+    <a href="#" style="color: #fff; margin: 0 8px; text-decoration: underline;">Polityka prywatności</a> |
+    <a href="#" style="color: #fff; margin: 0 8px; text-decoration: underline;">Regulamin</a>
+  </div>
+</footer>

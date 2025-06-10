@@ -1,0 +1,26 @@
+.mat-card {
+  
+  background: #1976d2;
+  color: #1976d2;
+}
+
+.mat-card-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.mat-card-content {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+// Set the background image for the whole start component
+:host {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: url('/assets/backgrounds/background.png') no-repeat center center fixed;
+  background-size: cover;
+}
