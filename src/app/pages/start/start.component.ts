@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     MatCardModule
   ],
   templateUrl: './start.component.html',
-  styleUrl: './start.component.scss'
+  styleUrls: ['./start.component.scss']
 })
 export class StartComponent {
     constructor(private router: Router) {}

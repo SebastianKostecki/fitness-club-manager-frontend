@@ -47,7 +47,7 @@ const colors: Record<string, EventColor> = {
         useClass: SchedulerDateFormatter
     }],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit  {
   

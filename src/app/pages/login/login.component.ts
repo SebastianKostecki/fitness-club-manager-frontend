@@ -4,6 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -13,13 +14,15 @@ import { AuthService } from '../../shared/services/auth.service';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit{
   formGroup!:FormGroup;
+  hide = true;
 
 
  constructor(private authService: AuthService, private fb:FormBuilder){}

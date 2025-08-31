@@ -8,9 +8,13 @@
           <input matInput formControlName="email">
         </mat-form-field>
       
-        <mat-form-field class="w-100 mb-2" >
-            <mat-label>Hasło</mat-label>
-            <input matInput formControlName="password">
+        <mat-form-field class="w-100 mb-2">
+          <mat-label>Hasło</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button matSuffix type="button" (click)="hide = !hide"
+                  [attr.aria-label]="'Pokaż/ukryj hasło'">
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
         </mat-form-field>
         <button mat-flat-button color="primary">Login</button>
     

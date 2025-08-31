@@ -53,6 +53,13 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  register(payload: { username: string; email: string; password: string }) {
+  const url = 'https://fitness-club-manager-backend.onrender.com/register';
+  return this.http.post<{ message: string }>(url, payload).pipe(
+    tap(() => this.router.navigate(['/login']))
+  );
+}
+
 
 
 }
