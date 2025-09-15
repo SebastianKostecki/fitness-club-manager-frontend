@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface User {
   UserID: number;
@@ -22,9 +23,8 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>('http://localhost:8080/users/me').pipe(
+    return this.http.get<User>(`${environment.apiUrl}/users/me`).pipe(
       tap(user => {
-        console.log('👤 Current user loaded:', user);
         this.currentUserSubject.next(user);
       })
     );
@@ -35,9 +35,9 @@ export class UserService {
   }
 
   getSystemMetrics(): Observable<any> {
-    return this.http.get<any>('http://localhost:8080/users/metrics').pipe(
+    return this.http.get<any>(`${environment.apiUrl}/users/metrics`).pipe(
       tap(metrics => {
-        console.log('📊 System metrics loaded:', metrics);
+        // Metrics loaded successfully
       })
     );
   }

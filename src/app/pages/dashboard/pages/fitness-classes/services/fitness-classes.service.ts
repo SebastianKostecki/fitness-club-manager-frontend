@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,7 @@ export class FitnessClassesService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = 'http://localhost:8080/classes';
+    const url = '${environment.apiUrl}/classes';
     return this.http.get<any[]>(url).pipe(
       tap((res) => {
         this.items.next(res);
@@ -63,12 +64,12 @@ export class FitnessClassesService {
   }
 
   getClassById(classId: number) {
-    const url = `http://localhost:8080/classes/${classId}`;
+    const url = `${environment.apiUrl}/classes/${classId}`;
     return this.http.get<any>(url);
   }
 
   cancelReservation(reservationId: number) {
-    const url = `http://localhost:8080/reservations/${reservationId}`;
+    const url = `${environment.apiUrl}/reservations/${reservationId}`;
     return this.http.delete<any>(url);
   }
 
@@ -76,7 +77,7 @@ export class FitnessClassesService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'http://localhost:8080/classes';
+    const url = '${environment.apiUrl}/classes';
     return this.http.post(url, fitnessClass).pipe(
       tap((res) => {
         this.addSuccess.next(true);
@@ -92,7 +93,7 @@ export class FitnessClassesService {
   }
 
   createFitnessClass(classData: any): Observable<any> {
-    const url = 'http://localhost:8080/calendar/classes';
+    const url = '${environment.apiUrl}/calendar/classes';
     return this.http.post(url, classData);
   }
 
@@ -100,7 +101,7 @@ export class FitnessClassesService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = 'http://localhost:8080/classes/' + classId;
+    const url = '${environment.apiUrl}/classes/' + classId;
     return this.http.delete(url).pipe(
       tap((res) => {
         this.deleteSuccess.next(true);
@@ -119,7 +120,7 @@ export class FitnessClassesService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = 'http://localhost:8080/classes/' + classId;
+    const url = '${environment.apiUrl}/classes/' + classId;
     return this.http.put(url, fitnessClass).pipe(
       tap((res) => {
         this.editSuccess.next(true);
@@ -135,7 +136,7 @@ export class FitnessClassesService {
   }
 
   bookClass(classId: number, userId: number) {
-    const url = 'http://localhost:8080/reservations';
+    const url = '${environment.apiUrl}/reservations';
     const reservationData = {
       UserID: userId,
       ClassID: classId,

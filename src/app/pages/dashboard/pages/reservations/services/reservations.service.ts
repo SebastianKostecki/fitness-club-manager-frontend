@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EventColor } from 'calendar-utils';
 import { BehaviorSubject, catchError, EMPTY, finalize, map, Observable, startWith, tap } from 'rxjs';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +86,7 @@ export class ReservationsService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = 'http://localhost:8080/reservations/raw';
+    const url = '${environment.apiUrl}/reservations/raw';
     return this.http.get<any[]>(url).pipe(
       tap(res => {
         console.log('Dane z backendu:', res);
@@ -112,7 +113,7 @@ export class ReservationsService {
     
     // Add cache busting parameter
     const timestamp = new Date().getTime();
-    const url = `http://localhost:8080/calendar/user?from=${from.toISOString().split('T')[0]}&to=${to.toISOString().split('T')[0]}&_t=${timestamp}`;
+    const url = `${environment.apiUrl}/calendar/user?from=${from.toISOString().split('T')[0]}&to=${to.toISOString().split('T')[0]}&_t=${timestamp}`;
     
     return this.http.get<{events: any[]}>(url).pipe(
       tap(res => {
@@ -134,7 +135,7 @@ export class ReservationsService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'http://localhost:8080/reservations';
+    const url = '${environment.apiUrl}/reservations';
     return this.http.post(url, reservation).pipe(
       tap(() => {
         this.addSuccess.next(true);
@@ -152,7 +153,7 @@ export class ReservationsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = `http://localhost:8080/reservations/${reservationId}`;
+    const url = `${environment.apiUrl}/reservations/${reservationId}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.deleteSuccess.next(true);
@@ -170,7 +171,7 @@ export class ReservationsService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = `http://localhost:8080/reservations/${reservationId}`;
+    const url = `${environment.apiUrl}/reservations/${reservationId}`;
     return this.http.put(url, reservation).pipe(
       tap(() => {
         this.editSuccess.next(true);
@@ -189,7 +190,7 @@ export class ReservationsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = `http://localhost:8080/calendar/room-reservations/${reservationId}`;
+    const url = `${environment.apiUrl}/calendar/room-reservations/${reservationId}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.deleteSuccess.next(true);
@@ -221,7 +222,7 @@ export class ReservationsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = `http://localhost:8080/calendar/reservations/${reservationId}`;
+    const url = `${environment.apiUrl}/calendar/reservations/${reservationId}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.deleteSuccess.next(true);

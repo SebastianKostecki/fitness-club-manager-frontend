@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, EMPTY, finalize, Observable, tap } from 'rxjs';
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class RoomsService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url= 'http://localhost:8080/rooms';
+    const url= '${environment.apiUrl}/rooms';
     return this.http.get<any[]>(url).pipe(
       tap((res)=>{
         this.items.next(res);
@@ -72,7 +73,7 @@ export class RoomsService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'http://localhost:8080/rooms';
+    const url = '${environment.apiUrl}/rooms';
     return this.http.post(url, room).pipe(
       tap((res)=>{
         this.addSuccess.next(true);
@@ -94,7 +95,7 @@ export class RoomsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = 'http://localhost:8080/rooms/' + roomId;
+    const url = '${environment.apiUrl}/rooms/' + roomId;
     console.log('Serwis: Wysyłam DELETE request na URL:', url);
     return this.http.delete(url).pipe(
       tap((res)=>{
@@ -126,7 +127,7 @@ export class RoomsService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = 'http://localhost:8080/rooms/' + roomId;
+    const url = '${environment.apiUrl}/rooms/' + roomId;
     return this.http.put(url, room).pipe(
       tap((res)=>{
         this.editSuccess.next(true);
@@ -144,17 +145,17 @@ export class RoomsService {
   }
 
   getRoomById(roomId: string): Observable<any> {
-    const url = `http://localhost:8080/rooms/${roomId}`;
+    const url = `${environment.apiUrl}/rooms/${roomId}`;
     return this.http.get<any>(url);
   }
 
   getRoomDetails(roomId: string): Observable<any> {
-    const url = `http://localhost:8080/rooms/${roomId}/details`;
+    const url = `${environment.apiUrl}/rooms/${roomId}/details`;
     return this.http.get<any>(url);
   }
 
   createRoomReservation(roomId: string, reservationData: any): Observable<any> {
-    const url = `http://localhost:8080/calendar/rooms/${roomId}/reservations`;
+    const url = `${environment.apiUrl}/calendar/rooms/${roomId}/reservations`;
     return this.http.post(url, reservationData);
   }
 }

@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, tap } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 
 @Injectable({
@@ -19,10 +20,9 @@ export class AuthService {
   constructor(private http: HttpClient, private router:Router){}
 
   login(login: any){
-    const url = 'http://localhost:8080/login';
+    const url = `${environment.apiUrl}/login`;
     return this.http.post<{jwt:string; role:string}>(url, login).pipe(
       tap((res: {jwt:string; role:string})=>{
-        console.log(res)
         this.jwt.next(res.jwt)
         this.role.next(res.role)
         localStorage.setItem('jwt', res.jwt)
@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   register(payload: { username: string; email: string; password: string }) {
-  const url = 'http://localhost:8080/register';
+  const url = `${environment.apiUrl}/register`;
   return this.http.post<{ message: string }>(url, payload).pipe(
     tap(() => this.router.navigate(['/login']))
   );

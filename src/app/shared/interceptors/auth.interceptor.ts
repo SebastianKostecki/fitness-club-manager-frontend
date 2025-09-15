@@ -11,12 +11,12 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("🔐 AuthInterceptor - request URL:", req.url);
+    // Processing request
     const jwt = this.authService.jwt.getValue();
     const role = this.authService.role.getValue();   // np. "admin", "trener", "użytkownik"
     
-    console.log("🔐 AuthInterceptor - JWT:", jwt ? "present" : "missing");
-    console.log("🔐 AuthInterceptor - Role:", role);
+    // JWT token check
+    // Role check
 
     let headers = req.headers;
 

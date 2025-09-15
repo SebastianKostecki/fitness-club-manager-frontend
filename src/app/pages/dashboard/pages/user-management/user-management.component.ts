@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { UserService, User } from '../../../../shared/services/user.service';
+import { environment } from '../../../../../environments/environment';
 
 export interface UserWithRole extends User {
   isEditing?: boolean;
@@ -54,7 +55,7 @@ export class UserManagementComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.currentUser$ = this.userService.currentUser$;
-    this.users$ = this.http.get<{users: User[]}>('http://localhost:8080/users').pipe(
+    this.users$ = this.http.get<{users: User[]}>('${environment.apiUrl}/users').pipe(
       map(response => response.users.map(user => ({
         ...user,
         isEditing: false,
@@ -103,7 +104,7 @@ export class UserManagementComponent implements OnInit {
       return;
     }
 
-    this.http.put(`http://localhost:8080/users/${user.UserID}`, {
+    this.http.put(`${environment.apiUrl}/users/${user.UserID}`, {
       Role: user.newRole
     }).subscribe({
       next: () => {
@@ -440,14 +441,14 @@ export class UserManagementComponent implements OnInit {
   }
 
   private performUserDeletion(user: UserWithRole): void {
-    this.http.delete(`http://localhost:8080/users/${user.UserID}`).subscribe({
+    this.http.delete(`${environment.apiUrl}/users/${user.UserID}`).subscribe({
       next: () => {
         this.snackBar.open(`Użytkownik ${user.Username} został usunięty`, 'Zamknij', {
           duration: 3000,
           panelClass: ['success-snackbar']
         });
         // Refresh the users list
-        this.users$ = this.http.get<{users: User[]}>('http://localhost:8080/users').pipe(
+        this.users$ = this.http.get<{users: User[]}>('${environment.apiUrl}/users').pipe(
           map(response => response.users.map(user => ({
             ...user,
             isEditing: false,

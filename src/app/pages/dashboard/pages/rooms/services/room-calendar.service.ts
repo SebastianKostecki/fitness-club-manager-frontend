@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../../environments/environment';
 
 export interface RoomCalendarEvent {
   id: string;
@@ -41,7 +42,7 @@ export class RoomCalendarService {
   constructor(private http: HttpClient) { }
 
   getRoomCalendar(roomId: string, from: string, to: string): Observable<RoomCalendarResponse> {
-    const url = `http://localhost:8080/rooms/${roomId}/calendar`;
+    const url = `${environment.apiUrl}/rooms/${roomId}/calendar`;
     return this.http.get<RoomCalendarResponse>(url, {
       params: { from, to }
     });
