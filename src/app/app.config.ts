@@ -3,11 +3,12 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withInterceptors } from '@angular/common/http';
 import {CalendarModule, DateAdapter} from "angular-calendar";
 import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 import { SchedulerModule } from 'angular-calendar-scheduler';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { credentialsInterceptor } from './shared/interceptors/credentials.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
      provideHttpClient(
     // DI-based interceptors must be explicitly enabled.
     withInterceptorsFromDi(),
+    withInterceptors([credentialsInterceptor])
   ),
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ]
