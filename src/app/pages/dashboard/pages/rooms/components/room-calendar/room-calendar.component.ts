@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RoomCalendarService, RoomCalendarEvent } from '../../services/room-calendar.service';
-import { RoomsService } from '../../services/rooms.service';
+import { RoomCalendarService, RoomCalendarEvent } from '@rooms/services/room-calendar.service';
+import { RoomsService } from '@rooms/services/rooms.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
