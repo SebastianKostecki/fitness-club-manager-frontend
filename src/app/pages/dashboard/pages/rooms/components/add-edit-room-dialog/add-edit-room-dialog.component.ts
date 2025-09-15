@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RoomsService } from '../../services/rooms.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -14,8 +17,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   imports: [
     CommonModule,
     MatInputModule,
+    MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule,
   ],
   templateUrl: './add-edit-room-dialog.component.html',
@@ -28,7 +34,7 @@ export class AddEditRoomDialogComponent implements OnInit {
   constructor(
     private fb:FormBuilder,
     private roomsService: RoomsService,
-    private dialogRef: MatDialogRef<AddEditRoomDialogComponent>,
+    public dialogRef: MatDialogRef<AddEditRoomDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ){}
   

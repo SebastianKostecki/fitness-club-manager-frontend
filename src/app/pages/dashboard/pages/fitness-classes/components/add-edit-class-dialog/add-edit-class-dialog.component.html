@@ -1,0 +1,106 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="header-icon">
+      <mat-icon>fitness_center</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2>{{ isEdit ? 'Edytuj zajęcia' : 'Dodaj zajęcia' }}</h2>
+      <p>{{ isEdit ? 'Zaktualizuj informacje o zajęciach' : 'Utwórz nowe zajęcia fitness' }}</p>
+    </div>
+  </div>
+
+  <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="modal-form">
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tytuł zajęć</mat-label>
+        <input matInput formControlName="Title" placeholder="np. Joga dla początkujących">
+        <mat-icon matPrefix>fitness_center</mat-icon>
+        <mat-error *ngIf="classForm.get('Title')?.hasError('required')">
+          Tytuł jest wymagany
+        </mat-error>
+        <mat-error *ngIf="classForm.get('Title')?.hasError('maxlength')">
+          Tytuł nie może przekraczać 100 znaków
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Data i godzina rozpoczęcia</mat-label>
+        <input matInput type="datetime-local" formControlName="StartTime">
+        <mat-icon matPrefix>schedule</mat-icon>
+        <mat-error *ngIf="classForm.get('StartTime')?.hasError('required')">
+          Data rozpoczęcia jest wymagana
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Data i godzina zakończenia</mat-label>
+        <input matInput type="datetime-local" formControlName="EndTime">
+        <mat-icon matPrefix>schedule</mat-icon>
+        <mat-error *ngIf="classForm.get('EndTime')?.hasError('required')">
+          Data zakończenia jest wymagana
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Pojemność (miejsca dla uczestników)</mat-label>
+        <input matInput type="number" formControlName="Capacity" min="1" max="100">
+        <mat-icon matPrefix>people</mat-icon>
+        <mat-error *ngIf="classForm.get('Capacity')?.hasError('required')">
+          Pojemność jest wymagana
+        </mat-error>
+        <mat-error *ngIf="classForm.get('Capacity')?.hasError('min')">
+          Pojemność musi być większa niż 0
+        </mat-error>
+        <mat-error *ngIf="classForm.get('Capacity')?.hasError('max')">
+          Pojemność nie może przekraczać 100
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Sala</mat-label>
+        <mat-select formControlName="RoomID">
+          <mat-option *ngFor="let room of rooms$ | async" [value]="room.RoomID">
+            {{ room.RoomName }} (Pojemność: {{ room.Capacity }})
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>room</mat-icon>
+        <mat-error *ngIf="classForm.get('RoomID')?.hasError('required')">
+          Sala jest wymagana
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="Status">
+          <mat-option value="Active">Aktywne</mat-option>
+          <mat-option value="Draft">Szkic</mat-option>
+          <mat-option value="Cancelled">Anulowane</mat-option>
+        </mat-select>
+        <mat-icon matPrefix>flag</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="capacity-info">
+      <mat-icon>info</mat-icon>
+      <p><strong>Uwaga:</strong> Pojemność oznacza liczbę miejsc dla uczestników. Trener prowadzący zajęcia nie wlicza się do tej liczby.</p>
+    </div>
+  </form>
+
+  <div class="modal-actions">
+    <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+      <mat-icon>close</mat-icon>
+      Anuluj
+    </button>
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="classForm.invalid || loading">
+      <mat-icon *ngIf="!loading">{{ isEdit ? 'save' : 'add' }}</mat-icon>
+      <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      {{ isEdit ? 'Zapisz zmiany' : 'Utwórz zajęcia' }}
+    </button>
+  </div>
+</div>

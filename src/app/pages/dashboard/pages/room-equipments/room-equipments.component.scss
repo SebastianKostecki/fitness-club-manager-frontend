@@ -1,0 +1,27 @@
+// Custom styling for Add button to match Edit button style
+::ng-deep .mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 8px rgba(142, 45, 226, 0.3) !important;
+  transition: all 0.2s ease !important;
+  
+  mat-icon {
+    margin-right: 8px !important;
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  &:hover {
+    background: linear-gradient(135deg, #7b1fa2 0%, #3d00c7 100%) !important;
+    box-shadow: 0 4px 12px rgba(142, 45, 226, 0.4) !important;
+  }
+  
+  &:active {
+    transform: translateY(1px) !important;
+  }
+}

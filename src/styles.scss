@@ -1,6 +1,322 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body { 
+  height: 100%; 
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+/* Fix for app-root stacking context issues */
+app-root, .app-container { 
+  transform: none !important; 
+  filter: none !important; 
+  backdrop-filter: none !important; 
+}
+
+/* CDK Overlay Container - Ensure correct stacking order */
+.cdk-overlay-container { 
+  z-index: 1000 !important; 
+}
+
+.cdk-overlay-backdrop { 
+  z-index: 1999 !important; 
+}
+
+.cdk-global-overlay-wrapper,
+.cdk-overlay-pane { 
+  z-index: 2001 !important; 
+  position: absolute !important; 
+  pointer-events: auto !important; 
+}
+
+/* Modal Styles */
+.mat-mdc-dialog-container {
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  overflow: auto !important;
+}
+
+/* Custom Dialog Styles */
+.custom-dialog-container {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.custom-dialog-backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+
+.mat-mdc-dialog-surface {
+  border-radius: 16px !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden !important;
+}
+
+/* Snackbar Styles */
+.success-snackbar {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+body { 
+  margin: 0; 
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  color: #333;
+}
 
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+/* Modern Calendar Styles */
+.cal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.cal-header {
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 16px 16px 0 0;
+}
+
+.cal-cell {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 2px;
+  border: 1px solid #f0f0f0;
+  
+  &:hover {
+    background-color: rgba(142, 45, 226, 0.1);
+    transform: scale(1.02);
+  }
+}
+
+.cal-today {
+  background: linear-gradient(135deg, #8e2de2, #4a00e0) !important;
+  color: white !important;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(142, 45, 226, 0.3);
+  border: none !important;
+}
+
+.cal-event {
+  background: linear-gradient(135deg, #8e2de2, #4a00e0);
+  color: white;
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin: 2px 0;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(142, 45, 226, 0.3);
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(142, 45, 226, 0.4);
+  }
+}
+
+/* Fix for angular-calendar specific issues */
+.cal-month-view {
+  .cal-cell {
+    border: 1px solid #f0f0f0 !important;
+  }
+  
+  .cal-row {
+    border: none !important;
+  }
+  
+  .cal-cell-row {
+    border: none !important;
+  }
+  
+  /* Remove any weird dividers or lines */
+  hr, .cal-divider, .cal-separator, .cal-line {
+    display: none !important;
+  }
+  
+  /* Fix for any horizontal lines */
+  .cal-month-view::before,
+  .cal-month-view::after,
+  .cal-row::before,
+  .cal-row::after {
+    display: none !important;
+  }
+}
+
+/* Modern Button Styles */
+.mat-mdc-button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  
+  &.mat-primary {
+    background: linear-gradient(135deg, #8e2de2, #4a00e0) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(142, 45, 226, 0.3) !important;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(142, 45, 226, 0.4) !important;
+    }
+  }
+}
+
+/* Modern Form Styles */
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    border-radius: 8px !important;
+  }
+}
+
+/* Modern Card Styles */
+.mat-mdc-card {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+/* Modern Table Styles */
+.mat-mdc-table {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+/* Override Angular Material Dialog defaults */
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: auto !important;
+  min-height: auto !important;
+}
+
+/* Modern Snackbar Styles */
+.mat-mdc-snack-bar-container {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Fix for drawer rendering issues */
+.mat-drawer-container {
+  overflow: visible !important;
+  position: relative !important;
+}
+
+.mat-drawer {
+  border: none !important;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+  z-index: 1000 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  background: white !important;
+}
+
+.mat-drawer-content {
+  overflow: visible !important;
+}
+
+/* Ensure no weird artifacts */
+* {
+  box-sizing: border-box;
+}
+
+/* Modal overlay veil - class-based instead of hover */
+.modal-open {
+  .mat-drawer-container,
+  .min-vh-100,
+  .mat-drawer-content {
+    overflow: visible !important;
+  }
+  
+  .mat-drawer {
+    z-index: 1000 !important;
+  }
+}
+
+/* Remove any potential artifacts */
+.mat-drawer-container::before,
+.mat-drawer-container::after,
+.mat-drawer::before,
+.mat-drawer::after {
+  display: none !important;
+}
+
+/* Ensure clean rendering */
+.mat-drawer-container {
+  contain: layout style paint !important;
+}
+
+/* Angular Calendar Specific Fixes */
+.cal-month-view {
+  .cal-cell {
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 8px !important;
+    margin: 2px !important;
+  }
+  
+  .cal-row {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .cal-cell-row {
+    border: none !important;
+  }
+  
+  /* Remove all weird lines and dividers */
+  hr, .cal-divider, .cal-separator, .cal-line, .cal-hr {
+    display: none !important;
+    border: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Fix for any pseudo-elements creating lines */
+  .cal-month-view::before,
+  .cal-month-view::after,
+  .cal-row::before,
+  .cal-row::after,
+  .cal-cell-row::before,
+  .cal-cell-row::after {
+    display: none !important;
+    content: none !important;
+  }
+  
+  /* Ensure clean table structure */
+  table {
+    border-collapse: separate !important;
+    border-spacing: 2px !important;
+  }
+  
+  td {
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+  }
+}

@@ -1,40 +1,447 @@
+<!-- User Card - Always visible -->
 <mat-card class="mb-3 user-card">
-  <mat-card-title>Jan Kowalski</mat-card-title>
-  <mat-card-subtitle>Miłego dnia</mat-card-subtitle>
-  <dl>
-    <dt>Najbliższy trening</dt>
-    <dd>{{(closestEvent$|async)?.title}} ({{(closestEvent$|async)?.start | date:"dd.MM.yyyy"}})</dd>
-    <dt>Ilość odbytych treningów</dt>
-    <dd class="mb-0">{{pastEventsCount$| async}}</dd>
+  <mat-card-title>
+    <ng-container *ngIf="currentUser$ | async as user; else loadingUser">
+      {{ user.Username }}
+    </ng-container>
+    <ng-template #loadingUser>
+      Ładowanie...
+    </ng-template>
+  </mat-card-title>
+  
+  <!-- Role Section -->
+  <div class="role-section" *ngIf="currentUser$ | async as user">
+    <div class="role-display" [ngClass]="'role-' + user.Role.toLowerCase()">
+      <div class="role-icon">{{ getRoleIcon(user.Role) }}</div>
+      <div class="role-info">
+        <div class="role-title">{{ getRoleDisplayName(user.Role) }}</div>
+        <div class="role-subtitle">{{ getRoleDescription(user.Role) }}</div>
+      </div>
+    </div>
+  </div>
+  
+  <mat-card-subtitle>
+    Miłego dnia! 🌟
+  </mat-card-subtitle>
+</mat-card>
+
+<!-- Role-specific content -->
+<ng-container *ngIf="currentUser$ | async as user">
+  
+  <!-- ADMIN DASHBOARD -->
+  <div *ngIf="user.Role === 'admin'" class="admin-dashboard">
+    <div class="dashboard-grid">
+      <!-- System Metrics -->
+      <mat-card class="metric-card">
+        <mat-card-title>📊 Metryki systemu</mat-card-title>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-value">{{ totalUsers$ | async }}</div>
+            <div class="metric-label">Użytkowników</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">{{ totalReservations$ | async }}</div>
+            <div class="metric-label">Rezerwacji</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">{{ totalClasses$ | async }}</div>
+            <div class="metric-label">Zajęć</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">{{ totalRooms$ | async }}</div>
+            <div class="metric-label">Sal</div>
+          </div>
+        </div>
+      </mat-card>
+      
+      <!-- Quick Actions -->
+      <mat-card class="action-card admin-actions">
+        <mat-card-title>⚡ Szybkie akcje</mat-card-title>
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" class="action-btn admin-btn" (click)="navigateToUserManagement()">
+            👥 Zarządzaj użytkownikami
+          </button>
+          <button mat-raised-button color="accent" class="action-btn admin-btn" (click)="navigateToRoomManagement()">
+            🏢 Zarządzaj salami
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  
+  <!-- TRAINER DASHBOARD -->
+  <div *ngIf="user.Role === 'trainer'" class="trainer-dashboard">
+    <div class="dashboard-grid">
+      <!-- My Classes -->
+      <mat-card class="classes-card">
+        <mat-card-title>💪 Moje zajęcia</mat-card-title>
+        <div class="upcoming-classes">
+          <div *ngFor="let event of (myClasses$ | async)" class="class-item">
+            <div class="class-time">{{ event.start | date:"HH:mm" }}</div>
+            <div class="class-details">
+              <div class="class-name">{{ event.title }}</div>
+              <div class="class-room">{{ event.roomName }}</div>
+            </div>
+          </div>
+          <div *ngIf="(myClasses$ | async)?.length === 0" class="no-classes">
+            Brak nadchodzących zajęć
+          </div>
+        </div>
+      </mat-card>
+      
+      <!-- Quick Actions -->
+      <mat-card class="action-card trainer-actions">
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" class="action-btn trainer-btn" (click)="organizeClass()">
+            💪 Zorganizuj zajęcia
+          </button>
+        </div>
+      </mat-card>
+    </div>
+    
+    <!-- Calendar for trainers -->
+    <div class="calendar-container">
+      <app-custom-calendar
+        [events]="(trainerEvents$ | async) || []"
+        [viewDate]="viewDate"
+        (eventClick)="onEventClick($event)"
+        (dateClick)="onDateClick($event)"
+        (monthChange)="onMonthChange($event)"
+        (reservationDeleted)="onReservationDeleted()"
+        (eventDeleted)="onEventDeleted($event)"
+      ></app-custom-calendar>
+    </div>
+  </div>
+  
+  <!-- RECEPTIONIST DASHBOARD -->
+  <div *ngIf="user.Role === 'receptionist'" class="receptionist-dashboard">
+    <div class="dashboard-grid">
+      <!-- System Metrics -->
+      <mat-card class="metric-card">
+        <mat-card-title>📊 Metryki systemu</mat-card-title>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-value">{{ totalUsers$ | async }}</div>
+            <div class="metric-label">Użytkowników</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">{{ totalReservations$ | async }}</div>
+            <div class="metric-label">Rezerwacji</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">{{ totalClasses$ | async }}</div>
+            <div class="metric-label">Zajęć</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">{{ totalRooms$ | async }}</div>
+            <div class="metric-label">Sal</div>
+          </div>
+        </div>
+      </mat-card>
+      
+      <!-- Quick Actions -->
+      <mat-card class="action-card admin-actions">
+        <mat-card-title>⚡ Szybkie akcje</mat-card-title>
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" class="action-btn admin-btn" (click)="navigateToUserManagement()">
+            👥 Zarządzaj użytkownikami
+          </button>
+          <button mat-raised-button color="accent" class="action-btn admin-btn" (click)="navigateToReservations()">
+            📅 Zarządzaj rezerwacjami
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  
+  <!-- REGULAR USER DASHBOARD -->
+  <div *ngIf="user.Role === 'regular'" class="user-dashboard">
+    <div class="dashboard-grid">
+      <!-- My Reservations -->
+      <mat-card class="my-reservations-card">
+        <mat-card-title>📅 Moje rezerwacje</mat-card-title>
+        <dl>
+          <dt>🎯 Najbliższy trening</dt>
+          <dd>
+            <ng-container *ngIf="(closestEvent$|async) as event; else noUpcomingEvents">
+              {{ event.title }} ({{ event.start | date:"dd.MM.yyyy 'o' HH:mm" }})
+            </ng-container>
+            <ng-template #noUpcomingEvents>
+              <span class="no-events">Brak nadchodzących treningów</span>
+            </ng-template>
+          </dd>
+          <dt>🏃‍♂️ Ilość odbytych treningów</dt>
+          <dd class="mb-0">
+            <span class="events-count">{{ pastEventsCount$ | async }}</span>
+            <span class="events-label">treningów</span>
+          </dd>
   </dl>
 </mat-card>
 
-<mwl-calendar-header [(view)]="view" [(viewDate)]="viewDate">
-</mwl-calendar-header>
-
-<ng-container *ngIf="(events$ | async) as events">
-  <div [ngSwitch]="view">
-  <mwl-calendar-month-view
-    *ngSwitchCase="'month'"
+      <!-- Quick Actions -->
+      <mat-card class="action-card user-actions">
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" class="action-btn user-btn" (click)="openActionModal()">
+            🏢 Zarezerwuj salę lub zapisz się na zajęcia
+          </button>
+          
+          <!-- Become Trainer Button -->
+          <button mat-stroked-button class="become-trainer-btn" (click)="openBecomeTrainerModal()">
+            💪 Zostań trenerem
+          </button>
+        </div>
+      </mat-card>
+    </div>
+    
+    <!-- Calendar for regular users -->
+    <div class="calendar-container">
+      <app-custom-calendar
+        [events]="(formattedEvents$ | async) || []"
     [viewDate]="viewDate"
-    [events]="events"
-    [activeDayIsOpen]="true"
-    (eventClicked)="eventClicked($event)"
-  >
-  </mwl-calendar-month-view>
-  <mwl-calendar-week-view
-    *ngSwitchCase="'week'"
-    [viewDate]="viewDate"
-    [events]="events"
-    (eventClicked)="eventClicked($event)"
-  >
-  </mwl-calendar-week-view>
-  <mwl-calendar-day-view
-    *ngSwitchCase="'day'"
-    [viewDate]="viewDate"
-    [events]="events"
-    (eventClicked)="eventClicked($event)"
-  >
-  </mwl-calendar-day-view>
+        (eventClick)="onEventClick($event)"
+        (dateClick)="onDateClick($event)"
+        (monthChange)="onMonthChange($event)"
+        (reservationDeleted)="onReservationDeleted()"
+        (eventDeleted)="onEventDeleted($event)"
+      ></app-custom-calendar>
+    </div>
   </div>
+  
 </ng-container>
+
+<!-- Action Selection Modal -->
+<div class="action-modal-overlay" *ngIf="showActionModal" (click)="closeActionModal()">
+  <div class="action-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title">Wybierz akcję</h3>
+      <button class="close-btn" (click)="closeActionModal()">×</button>
+    </div>
+    
+    <div class="modal-content">
+      <!-- User Actions -->
+      <div *ngIf="(currentUser$ | async)?.Role === 'regular'" class="action-options">
+        <button class="action-option-btn" (click)="reserveRoom()">
+          <div class="option-icon">🏢</div>
+          <div class="option-content">
+            <div class="option-title">Zarezerwuj salę</div>
+            <div class="option-description">Zarezerwuj salę na określony czas</div>
+          </div>
+        </button>
+        
+        <button class="action-option-btn" (click)="signUpForClass()">
+          <div class="option-icon">💪</div>
+          <div class="option-content">
+            <div class="option-title">Zapisz się na zajęcia</div>
+            <div class="option-description">Dołącz do zajęć grupowych</div>
+          </div>
+        </button>
+      </div>
+      
+      <!-- Trainer Actions -->
+      <div *ngIf="(currentUser$ | async)?.Role === 'trainer'" class="action-options">
+        <button class="action-option-btn" (click)="organizeClass()">
+          <div class="option-icon">💪</div>
+          <div class="option-content">
+            <div class="option-title">Zorganizuj zajęcia</div>
+            <div class="option-description">Stwórz nowe zajęcia grupowe</div>
+          </div>
+        </button>
+        
+        <button class="action-option-btn" (click)="reserveRoom()">
+          <div class="option-icon">🏢</div>
+          <div class="option-content">
+            <div class="option-title">Zarezerwuj salę</div>
+            <div class="option-description">Zarezerwuj salę na prywatny trening</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Room Reservation Modal -->
+<div class="action-modal-overlay" *ngIf="showRoomReservationModal" (click)="closeRoomReservationModal()">
+  <div class="action-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title">🏢 Rezerwacja sali</h3>
+      <button class="close-btn" (click)="closeRoomReservationModal()">×</button>
+    </div>
+    
+    <div class="modal-content">
+      <form class="reservation-form">
+        <div class="form-group">
+          <label>Sala *</label>
+          <select [(ngModel)]="roomReservationData.roomId" name="roomId" required>
+            <option value="">Wybierz salę</option>
+            <option *ngFor="let room of rooms$ | async" [value]="room.RoomID">
+              {{ room.RoomName }}
+            </option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Data *</label>
+          <input type="date" [(ngModel)]="roomReservationData.date" name="date" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Godzina rozpoczęcia *</label>
+            <input type="time" [(ngModel)]="roomReservationData.startTime" name="startTime" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Godzina zakończenia *</label>
+            <input type="time" [(ngModel)]="roomReservationData.endTime" name="endTime" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Cel rezerwacji</label>
+          <textarea [(ngModel)]="roomReservationData.purpose" name="purpose" 
+                    placeholder="Opisz cel rezerwacji (opcjonalnie)"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="closeRoomReservationModal()">
+            Anuluj
+          </button>
+          <button type="button" class="btn-primary" (click)="submitRoomReservation()">
+            Zarezerwuj salę
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Class Organization Modal -->
+<div class="action-modal-overlay" *ngIf="showClassOrganizationModal" (click)="closeClassOrganizationModal()">
+  <div class="action-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title">💪 Organizacja zajęć</h3>
+      <button class="close-btn" (click)="closeClassOrganizationModal()">×</button>
+    </div>
+    
+    <div class="modal-content">
+      <form class="reservation-form">
+        <div class="form-group">
+          <label>Tytuł zajęć *</label>
+          <input type="text" [(ngModel)]="classOrganizationData.title" name="title" 
+                 placeholder="np. Joga dla początkujących" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Sala *</label>
+          <select [(ngModel)]="classOrganizationData.roomId" name="roomId" required>
+            <option value="">Wybierz salę</option>
+            <option *ngFor="let room of rooms$ | async" [value]="room.RoomID">
+              {{ room.RoomName }}
+            </option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Data *</label>
+          <input type="date" [(ngModel)]="classOrganizationData.date" name="date" required>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Godzina rozpoczęcia *</label>
+            <input type="time" [(ngModel)]="classOrganizationData.startTime" name="startTime" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Godzina zakończenia *</label>
+            <input type="time" [(ngModel)]="classOrganizationData.endTime" name="endTime" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Pojemność (osoby)</label>
+          <input type="number" [(ngModel)]="classOrganizationData.capacity" name="capacity" 
+                 min="1" max="50" value="10">
+        </div>
+        
+        <div class="form-group">
+          <label>Opis zajęć</label>
+          <textarea [(ngModel)]="classOrganizationData.description" name="description" 
+                    placeholder="Opisz zajęcia (opcjonalnie)"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="closeClassOrganizationModal()">
+            Anuluj
+          </button>
+          <button type="button" class="btn-primary" (click)="submitClassOrganization()">
+            Utwórz zajęcia
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Class Signup Modal -->
+<div class="action-modal-overlay" *ngIf="showClassSignupModal" (click)="closeClassSignupModal()">
+  <div class="action-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title">💪 Zapisz się na zajęcia</h3>
+      <button class="close-btn" (click)="closeClassSignupModal()">×</button>
+    </div>
+    
+    <div class="modal-content">
+      <div class="class-list">
+        <div *ngFor="let classItem of availableClasses$ | async" class="class-item">
+          <div class="class-info">
+            <h4>{{ classItem.Title }}</h4>
+            <p>📅 {{ formatClassDate(classItem.StartTime) }}</p>
+            <p>📍 Sala {{ classItem.RoomID }}</p>
+            <p>👨‍🏫 {{ classItem.trainer?.Username || 'Trener' }}</p>
+            <p>👥 {{ getAvailableSpots(classItem) }}/{{ classItem.Capacity }} miejsc</p>
+          </div>
+          <button 
+            class="btn-primary" 
+            (click)="bookClass(classItem.ClassID)"
+            [disabled]="isClassFull(classItem) || isUserAlreadyRegistered(classItem)">
+            {{ isUserAlreadyRegistered(classItem) ? 'Już zapisany' : (isClassFull(classItem) ? 'Brak miejsc' : 'Zapisz się') }}
+          </button>
+        </div>
+        
+        <div *ngIf="(availableClasses$ | async)?.length === 0" class="no-classes">
+          <p>Brak dostępnych zajęć do zapisania się.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Become Trainer Modal -->
+<div class="action-modal-overlay" *ngIf="showBecomeTrainerModal" (click)="closeBecomeTrainerModal()">
+  <div class="action-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title">💪 Zostań trenerem</h3>
+      <button class="close-btn" (click)="closeBecomeTrainerModal()">×</button>
+    </div>
+    
+    <div class="modal-content">
+      <div class="trainer-info-content">
+        <p class="trainer-info-text">
+          Chcesz zostać trenerem i prowadzić własne zajęcia? 
+          Skontaktuj się z naszą recepcją, aby omówić szczegóły!
+        </p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <mat-icon class="contact-icon">email</mat-icon>
+            <span class="contact-text">recepcja&#64;fitnessclub.pl</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon class="contact-icon">phone</mat-icon>
+            <span class="contact-text">123 456 789</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

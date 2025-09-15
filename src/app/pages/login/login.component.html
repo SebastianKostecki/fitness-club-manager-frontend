@@ -1,25 +1,50 @@
 
-<div class="min-vh-100 d-flex align-items-center" >
-  <mat-card class="container p-4" appearance="outlined" style="max-width: 400px;">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-        <h1>Zaloguj się</h1>
-        <mat-form-field class="w-100 mb-2" >
-          <mat-label>Nazwa Użytkownia</mat-label>
-          <input matInput formControlName="email">
-        </mat-form-field>
-      
-        <mat-form-field class="w-100 mb-2">
-          <mat-label>Hasło</mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
-          <button mat-icon-button matSuffix type="button" (click)="hide = !hide"
-                  [attr.aria-label]="'Pokaż/ukryj hasło'">
-            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-        </mat-form-field>
-        <button mat-flat-button color="primary">Login</button>
-    
-    
-    </form>
-  </mat-card>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <mat-icon class="login-icon">login</mat-icon>
+      <h1 class="login-title">Witaj z powrotem</h1>
+      <p class="login-subtitle">Zaloguj się do swojego konta</p>
+    </div>
 
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Adres email</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="twoj@email.com">
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="formGroup.get('email')?.hasError('required')">
+          Adres email jest wymagany
+        </mat-error>
+        <mat-error *ngIf="formGroup.get('email')?.hasError('email')">
+          Wprowadź poprawny adres email
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Hasło</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Wprowadź hasło">
+        <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Pokaż/ukryj hasło'">
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="formGroup.get('password')?.hasError('required')">
+          Hasło jest wymagane
+        </mat-error>
+      </mat-form-field>
+
+      <div class="error-message" *ngIf="apiError">
+        <mat-icon>error</mat-icon>
+        <span>{{ apiError }}</span>
+      </div>
+
+      <button mat-raised-button type="submit" class="login-button" [disabled]="formGroup.invalid || loading">
+        <mat-icon *ngIf="!loading">login</mat-icon>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        <span>{{ loading ? 'Logowanie...' : 'Zaloguj się' }}</span>
+      </button>
+    </form>
+
+    <div class="register-link">
+      <p>Nie masz konta? <a routerLink="/register">Zarejestruj się</a></p>
+    </div>
+  </div>
 </div>

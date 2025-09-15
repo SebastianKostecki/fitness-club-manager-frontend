@@ -1,73 +1,205 @@
-<h1>Zajęcia fitness</h1>
+<div class="fitness-classes-container">
+  <mat-card class="header-card">
+    <div class="header-content">
+      <div class="header-text">
+        <mat-card-title>💪 Zarządzanie zajęciami</mat-card-title>
+        <mat-card-subtitle>Przeglądaj i zarządzaj wszystkimi zajęciami fitness</mat-card-subtitle>
+      </div>
+      <button mat-raised-button color="primary" (click)="addClass()" *ngIf="currentUser?.Role === 'admin' || currentUser?.Role === 'trainer'">
+        <mat-icon>add</mat-icon>
+        Dodaj zajęcia
+      </button>
+    </div>
+  </mat-card>
 
-<button mat-flat-button color="primary" (click)="add()">Dodaj</button>
+  <mat-tab-group class="classes-tabs">
+    <!-- Nadchodzące zajęcia -->
+    <mat-tab label="📅 Nadchodzące">
+      <div class="tab-content">
+        <div *ngIf="upcomingClasses$ | async as classes; else loadingUpcoming">
+          <div *ngIf="classes.length === 0" class="no-classes">
+            <mat-icon>event_busy</mat-icon>
+            <h3>Brak nadchodzących zajęć</h3>
+            <p>Nie ma zaplanowanych zajęć w najbliższym czasie.</p>
+          </div>
+          
+          <div *ngFor="let classItem of classes" class="class-card">
+            <div class="class-header">
+              <h3>{{ classItem.Title }}</h3>
+              <mat-chip [color]="getStatusColor(classItem.Status)" selected>
+                {{ getStatusText(classItem.Status) }}
+              </mat-chip>
+            </div>
+            
+            <div class="class-details">
+              <div class="detail-item">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ formatDate(classItem.StartTime) }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>room</mat-icon>
+                <span>Sala {{ classItem.RoomID }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>people</mat-icon>
+                <span>Pojemność: {{ classItem.Capacity }} osób</span>
+              </div>
+              
+              <div class="detail-item" *ngIf="classItem.TrainerID">
+                <mat-icon>person</mat-icon>
+                <span>Trener ID: {{ classItem.TrainerID }}</span>
+              </div>
+            </div>
+            
+            <div class="class-actions">
+              <button mat-raised-button color="primary" (click)="editClass(classItem)">
+                <mat-icon>edit</mat-icon>
+                Edytuj
+              </button>
+              <button mat-raised-button color="warn" (click)="deleteClass(classItem)">
+                <mat-icon>delete</mat-icon>
+                Usuń
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <ng-template #loadingUpcoming>
+          <div class="loading">
+            <mat-icon>refresh</mat-icon>
+            <p>Ładowanie nadchodzących zajęć...</p>
+          </div>
+        </ng-template>
+      </div>
+    </mat-tab>
 
-<!-- <mat-card *ngIf="(error$ | async)" class="bg-danger text-white">
-  <mat-card-content>{{ (error$ | async)?.error.message }}</mat-card-content>
-</mat-card> -->
+    <!-- Zakończone zajęcia -->
+    <mat-tab label="📋 Zakończone">
+      <div class="tab-content">
+        <div *ngIf="pastClasses$ | async as classes; else loadingPast">
+          <div *ngIf="classes.length === 0" class="no-classes">
+            <mat-icon>history</mat-icon>
+            <h3>Brak zakończonych zajęć</h3>
+            <p>Nie ma jeszcze zakończonych zajęć w systemie.</p>
+          </div>
+          
+          <div *ngFor="let classItem of classes" class="class-card past-class">
+            <div class="class-header">
+              <h3>{{ classItem.Title }}</h3>
+              <mat-chip [color]="getStatusColor(classItem.Status)" selected>
+                {{ getStatusText(classItem.Status) }}
+              </mat-chip>
+            </div>
+            
+            <div class="class-details">
+              <div class="detail-item">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ formatDate(classItem.StartTime) }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>room</mat-icon>
+                <span>Sala {{ classItem.RoomID }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>people</mat-icon>
+                <span>Pojemność: {{ classItem.Capacity }} osób</span>
+              </div>
+              
+              <div class="detail-item" *ngIf="classItem.TrainerID">
+                <mat-icon>person</mat-icon>
+                <span>Trener ID: {{ classItem.TrainerID }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <ng-template #loadingPast>
+          <div class="loading">
+            <mat-icon>refresh</mat-icon>
+            <p>Ładowanie zakończonych zajęć...</p>
+          </div>
+        </ng-template>
+      </div>
+    </mat-tab>
 
-<div>
-  <!-- <ng-container *ngIf="(loading$ | async)">
-    <p>Ładowanie . . .</p>
-  </ng-container> -->
-
-  <ng-container *ngIf="(fitnessClasses$ | async) as dataSource">
-    <table mat-table [dataSource]="dataSource">
-
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Id </th>
-        <td mat-cell *matCellDef="let element"> {{ element.ClassID }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef> Tytuł </th>
-        <td mat-cell *matCellDef="let element"> {{ element.Title }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="trainer">
-        <th mat-header-cell *matHeaderCellDef> Trener </th>
-        <td mat-cell *matCellDef="let element"> {{ element.trainer?.Username }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="room">
-        <th mat-header-cell *matHeaderCellDef> Sala </th>
-        <td mat-cell *matCellDef="let element"> {{ element.room?.RoomName }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="start">
-        <th mat-header-cell *matHeaderCellDef> Start </th>
-        <td mat-cell *matCellDef="let element"> {{ element.StartTime | date:'short' }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="end">
-        <th mat-header-cell *matHeaderCellDef> Koniec </th>
-        <td mat-cell *matCellDef="let element"> {{ element.EndTime | date:'short' }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="capacity">
-        <th mat-header-cell *matHeaderCellDef> Pojemność </th>
-        <td mat-cell *matCellDef="let element"> {{ element.Capacity }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let element"> {{ element.Status }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="warn" (click)="delete(element.ClassID)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="edit(element)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </ng-container>
+    <!-- Wszystkie zajęcia -->
+    <mat-tab label="📊 Wszystkie">
+      <div class="tab-content">
+        <div *ngIf="allClasses$ | async as classes; else loadingAll">
+          <div class="classes-summary">
+            <mat-card class="summary-card">
+              <mat-card-title>Podsumowanie</mat-card-title>
+              <div class="summary-stats">
+                <div class="stat-item">
+                  <span class="stat-number">{{ classes.length }}</span>
+                  <span class="stat-label">Wszystkich zajęć</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">{{ (upcomingClasses$ | async)?.length || 0 }}</span>
+                  <span class="stat-label">Nadchodzących</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">{{ (pastClasses$ | async)?.length || 0 }}</span>
+                  <span class="stat-label">Zakończonych</span>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+          
+          <div *ngFor="let classItem of classes" class="class-card">
+            <div class="class-header">
+              <h3>{{ classItem.Title }}</h3>
+              <mat-chip [color]="getStatusColor(classItem.Status)" selected>
+                {{ getStatusText(classItem.Status) }}
+              </mat-chip>
+            </div>
+            
+            <div class="class-details">
+              <div class="detail-item">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ formatDate(classItem.StartTime) }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>room</mat-icon>
+                <span>Sala {{ classItem.RoomID }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <mat-icon>people</mat-icon>
+                <span>Pojemność: {{ classItem.Capacity }} osób</span>
+              </div>
+              
+              <div class="detail-item" *ngIf="classItem.TrainerID">
+                <mat-icon>person</mat-icon>
+                <span>Trener ID: {{ classItem.TrainerID }}</span>
+              </div>
+            </div>
+            
+            <div class="class-actions">
+              <button mat-raised-button color="primary" (click)="editClass(classItem)">
+                <mat-icon>edit</mat-icon>
+                Edytuj
+              </button>
+              <button mat-raised-button color="warn" (click)="deleteClass(classItem)">
+                <mat-icon>delete</mat-icon>
+                Usuń
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <ng-template #loadingAll>
+          <div class="loading">
+            <mat-icon>refresh</mat-icon>
+            <p>Ładowanie wszystkich zajęć...</p>
+          </div>
+        </ng-template>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>

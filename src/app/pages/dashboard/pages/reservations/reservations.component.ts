@@ -59,4 +59,16 @@ export class ReservationsComponent implements OnInit {
       }
     });
   }
+
+  getStatusText(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'confirmed': return '✅ Potwierdzona';
+      case 'pending': return '⏳ Oczekująca';
+      case 'cancelled': return '❌ Anulowana';
+      case 'zarezerwowano': return '✅ Zarezerwowano';
+      case 'rezerwacja': return '📝 Rezerwacja';
+      case 'active': return '✅ Aktywna';
+      default: return status;
+    }
+  }
 }

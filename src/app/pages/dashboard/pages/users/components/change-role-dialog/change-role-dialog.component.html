@@ -1,0 +1,20 @@
+<div class="p-4">
+  <h2>Zmień rolę użytkownika</h2>
+  <p><strong>Użytkownik:</strong> {{ data?.user?.Username }}</p>
+  <p><strong>Obecna rola:</strong> {{ getRoleDisplayName(data?.user?.Role) }}</p>
+  
+  <mat-form-field class="w-100 mb-3">
+    <mat-label>Nowa rola</mat-label>
+    <mat-select [(ngModel)]="selectedRole">
+      <mat-option value="regular">Regular</mat-option>
+      <mat-option value="trener">Trener</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <div class="dialog-actions">
+    <button mat-button (click)="onCancel()">Anuluj</button>
+    <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="!selectedRole || selectedRole === data?.user?.Role">
+      Zmień rolę
+    </button>
+  </div>
+</div>

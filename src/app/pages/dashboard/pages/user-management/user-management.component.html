@@ -1,0 +1,115 @@
+<div class="user-management-container">
+  <mat-card class="header-card">
+    <mat-card-title>👥 Zarządzanie użytkownikami</mat-card-title>
+    <mat-card-subtitle>Przeglądaj i edytuj role użytkowników w systemie</mat-card-subtitle>
+  </mat-card>
+
+  <div class="users-content">
+    <div *ngIf="users$ | async as users; else loadingUsers">
+      <div *ngIf="users.length === 0" class="no-users">
+        <mat-icon>people_outline</mat-icon>
+        <h3>Brak użytkowników</h3>
+        <p>Nie ma użytkowników w systemie.</p>
+      </div>
+      
+      <div *ngIf="users.length > 0" class="users-table-container">
+        <table mat-table [dataSource]="users" class="users-table">
+          <!-- Username Column -->
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Nazwa użytkownika</th>
+            <td mat-cell *matCellDef="let user">
+              <div class="user-info">
+                <span class="username">{{ user.Username }}</span>
+                <span class="user-id">ID: {{ user.UserID }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let user">
+              <span class="email">{{ user.Email }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Role Column -->
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Rola</th>
+            <td mat-cell *matCellDef="let user">
+              <div *ngIf="!user.isEditing; else editingRole">
+                <mat-chip [color]="getRoleColor(user.Role)" selected>
+                  <span class="role-icon">{{ getRoleIcon(user.Role) }}</span>
+                  {{ getRoleDisplayName(user.Role) }}
+                </mat-chip>
+              </div>
+              
+              <ng-template #editingRole>
+                <mat-form-field appearance="outline" class="role-select">
+                  <mat-select [(value)]="user.newRole" placeholder="Wybierz rolę">
+                    <mat-option *ngFor="let role of availableRoles" [value]="role.value">
+                      <span class="role-option">
+                        <span class="role-icon">{{ role.icon }}</span>
+                        {{ role.label }}
+                      </span>
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Created At Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Data utworzenia</th>
+            <td mat-cell *matCellDef="let user">
+              <span class="created-date">{{ formatDate(user.CreatedAt) }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Akcje</th>
+            <td mat-cell *matCellDef="let user">
+              <div *ngIf="currentUser$ | async as currentUser">
+                <div *ngIf="!user.isEditing && canEditUser(user, currentUser)" class="action-buttons">
+                  <button mat-icon-button color="primary" (click)="startEditing(user)" title="Edytuj rolę">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteUser(user)" title="Usuń użytkownika" *ngIf="canDeleteUser(user, currentUser)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+                
+                <div *ngIf="user.isEditing" class="editing-actions">
+                  <button mat-icon-button color="primary" (click)="saveRole(user)" title="Zapisz">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEditing(user)" title="Anuluj">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <div *ngIf="!canEditUser(user, currentUser)" class="no-actions">
+                  <span class="no-edit-text">
+                    {{ user.UserID === currentUser.UserID ? 'Własne konto' : 'Brak uprawnień' }}
+                  </span>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="user-row"></tr>
+        </table>
+      </div>
+    </div>
+    
+    <ng-template #loadingUsers>
+      <div class="loading">
+        <mat-icon>refresh</mat-icon>
+        <p>Ładowanie użytkowników...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

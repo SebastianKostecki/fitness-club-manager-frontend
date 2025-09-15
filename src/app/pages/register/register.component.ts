@@ -3,10 +3,13 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +20,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatFormFieldModule,     
     MatInputModule,
     MatButtonModule,
-    MatCardModule ],
+    MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    RouterModule
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })

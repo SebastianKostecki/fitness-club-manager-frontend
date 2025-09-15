@@ -1,0 +1,230 @@
+.modal-container {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  width: 500px;
+  max-width: 90vw;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+  color: white;
+  padding: 32px;
+  text-align: center;
+  position: relative;
+
+  .header-icon {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .modal-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-subtitle {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.9;
+    line-height: 1.4;
+  }
+}
+
+.modal-form {
+  padding: 32px;
+  background: white;
+}
+
+.form-field {
+  margin-bottom: 24px;
+
+  .full-width {
+    width: 100%;
+  }
+
+  ::ng-deep .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      border-radius: 12px;
+      background-color: #f8fafc;
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: #8e2de2;
+        background-color: #f1f5f9;
+      }
+
+      &.mdc-text-field--focused {
+        border-color: #8e2de2;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba(142, 45, 226, 0.1);
+      }
+    }
+
+    .mat-mdc-form-field-label {
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .mat-mdc-input-element {
+      color: #1a202c;
+      font-weight: 500;
+      padding: 16px 12px;
+
+      &::placeholder {
+        color: #94a3b8;
+        font-weight: 400;
+      }
+    }
+
+    .mat-mdc-form-field-icon-prefix {
+      color: #8e2de2;
+      margin-right: 8px;
+    }
+
+    .mat-mdc-form-field-icon-suffix {
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .mat-mdc-form-field-error {
+      color: #ef4444;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+
+  .cancel-button {
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+      color: #475569;
+    }
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+
+  .submit-button {
+    background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 32px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.3);
+    transition: all 0.3s ease;
+    min-width: 140px;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(142, 45, 226, 0.4);
+      background: linear-gradient(135deg, #7c3aed 0%, #3730a3 100%);
+    }
+
+    &:disabled {
+      background: #cbd5e1;
+      color: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    mat-icon {
+      margin-right: 8px;
+    }
+
+    mat-spinner {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .modal-container {
+    width: 90vw;
+    max-width: 95vw;
+    margin: 16px;
+  }
+
+  .modal-header {
+    padding: 24px 20px;
+
+    .header-icon {
+      width: 56px;
+      height: 56px;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    .modal-title {
+      font-size: 24px;
+    }
+
+    .modal-subtitle {
+      font-size: 14px;
+    }
+  }
+
+  .modal-form {
+    padding: 24px 20px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 12px;
+
+    .cancel-button,
+    .submit-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

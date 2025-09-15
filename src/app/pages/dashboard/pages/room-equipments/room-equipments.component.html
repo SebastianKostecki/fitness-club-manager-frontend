@@ -1,6 +1,9 @@
 <h1>Przypisany sprzęt do sal</h1>
 
-<button mat-flat-button color="primary" (click)="add()">Dodaj</button>
+<button mat-raised-button color="primary" (click)="add()">
+  <mat-icon>add</mat-icon>
+  Dodaj
+</button>
 
 <mat-card *ngIf="(error$ | async)" class="bg-danger text-white">
   <mat-card-content>{{ (error$ | async)?.error.message }}</mat-card-content>

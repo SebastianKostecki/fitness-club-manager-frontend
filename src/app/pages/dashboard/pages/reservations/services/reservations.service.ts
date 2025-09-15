@@ -38,10 +38,18 @@ export class ReservationsService {
     map((items)=>{
       return items.map((item)=>{
         return {
-          title: item.fitness_class.Title,
-          start: new Date(item.fitness_class.StartTime),
-          end: new Date(item.fitness_class.EndTime), 
-          color: this.colors['yellow']
+          id: item.id,
+          title: item.title,
+          start: new Date(item.start),
+          end: new Date(item.end),
+          type: item.type,
+          roomName: item.roomName,
+          status: item.status,
+          meta: item.meta || {  // Preserve the original meta object from backend
+            type: item.type,
+            roomName: item.roomName,
+            status: item.status
+          }
         }
       })
     })
@@ -77,7 +85,7 @@ export class ReservationsService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = 'https://fitness-club-manager-backend.onrender.com/reservations';
+    const url = 'http://localhost:8080/reservations/raw';
     return this.http.get<any[]>(url).pipe(
       tap(res => {
         console.log('Dane z backendu:', res);
@@ -92,11 +100,41 @@ export class ReservationsService {
     );
   }
 
+  getCalendarEvents() {
+    this.loading.next(true);
+    this.error.next(null);
+    this.success.next(false);
+    
+    // Get extended range to ensure we capture upcoming trainer classes
+    const now = new Date();
+    const from = new Date(now.getFullYear(), now.getMonth(), 1);
+    const to = new Date(now.getFullYear(), now.getMonth() + 3, 0); // 3 months ahead
+    
+    // Add cache busting parameter
+    const timestamp = new Date().getTime();
+    const url = `http://localhost:8080/calendar/user?from=${from.toISOString().split('T')[0]}&to=${to.toISOString().split('T')[0]}&_t=${timestamp}`;
+    
+    return this.http.get<{events: any[]}>(url).pipe(
+      tap(res => {
+        console.log('Calendar events from backend:', res);
+        this.items.next(res.events || []);
+        // schedulerItems$ is a pipe, we don't need to call .next() on it
+        this.success.next(true);
+      }),
+      finalize(() => this.loading.next(false)),
+      catchError(err => {
+        console.error('Error fetching calendar events:', err);
+        this.error.next(err);
+        return EMPTY;
+      })
+    );
+  }
+
   addReservation(reservation: any) {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'https://fitness-club-manager-backend.onrender.com/reservations';
+    const url = 'http://localhost:8080/reservations';
     return this.http.post(url, reservation).pipe(
       tap(() => {
         this.addSuccess.next(true);
@@ -114,7 +152,7 @@ export class ReservationsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = `https://fitness-club-manager-backend.onrender.com/reservations/${reservationId}`;
+    const url = `http://localhost:8080/reservations/${reservationId}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.deleteSuccess.next(true);
@@ -132,7 +170,7 @@ export class ReservationsService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = `https://fitness-club-manager-backend.onrender.com/reservations/${reservationId}`;
+    const url = `http://localhost:8080/reservations/${reservationId}`;
     return this.http.put(url, reservation).pipe(
       tap(() => {
         this.editSuccess.next(true);
@@ -141,6 +179,70 @@ export class ReservationsService {
       finalize(() => this.editLoading.next(false)),
       catchError(err => {
         this.editError.next(err);
+        return EMPTY;
+      })
+    );
+  }
+
+  // Delete room reservation
+  deleteRoomReservation(reservationId: string) {
+    this.deleteLoading.next(true);
+    this.deleteError.next(null);
+    this.deleteSuccess.next(false);
+    const url = `http://localhost:8080/calendar/room-reservations/${reservationId}`;
+    return this.http.delete(url).pipe(
+      tap(() => {
+        this.deleteSuccess.next(true);
+        // Force immediate refresh
+        this.getCalendarEvents().subscribe();
+        // Also refresh after delay
+        setTimeout(() => {
+          this.getCalendarEvents().subscribe();
+        }, 100);
+        // One more refresh
+        setTimeout(() => {
+          this.getCalendarEvents().subscribe();
+        }, 300);
+        // Final refresh
+        setTimeout(() => {
+          this.getCalendarEvents().subscribe();
+        }, 600);
+      }),
+      finalize(() => this.deleteLoading.next(false)),
+      catchError(err => {
+        this.deleteError.next(err);
+        return EMPTY;
+      })
+    );
+  }
+
+  // Delete class reservation
+  deleteClassReservation(reservationId: string) {
+    this.deleteLoading.next(true);
+    this.deleteError.next(null);
+    this.deleteSuccess.next(false);
+    const url = `http://localhost:8080/calendar/reservations/${reservationId}`;
+    return this.http.delete(url).pipe(
+      tap(() => {
+        this.deleteSuccess.next(true);
+        // Force immediate refresh
+        this.getCalendarEvents().subscribe();
+        // Also refresh after delay
+        setTimeout(() => {
+          this.getCalendarEvents().subscribe();
+        }, 100);
+        // One more refresh
+        setTimeout(() => {
+          this.getCalendarEvents().subscribe();
+        }, 300);
+        // Final refresh
+        setTimeout(() => {
+          this.getCalendarEvents().subscribe();
+        }, 600);
+      }),
+      finalize(() => this.deleteLoading.next(false)),
+      catchError(err => {
+        this.deleteError.next(err);
         return EMPTY;
       })
     );

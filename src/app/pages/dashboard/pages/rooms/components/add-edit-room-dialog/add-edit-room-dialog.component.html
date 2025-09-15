@@ -1,27 +1,58 @@
-<div class="p-4">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-        <h1>{{data?.isEdit? "Edytuj": "Dodaj"}} Sale</h1>
-        <mat-form-field class="w-100 mb-2" >
-          <mat-label>Sala</mat-label>
-          <input matInput formControlName="RoomName">
-        </mat-form-field>
-      
-        <mat-form-field class="w-100 mb-2" >
-            <mat-label>Pojemność</mat-label>
-            <input matInput formControlName="Capacity">
-        </mat-form-field>
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="header-icon">
+      <mat-icon>meeting_room</mat-icon>
+    </div>
+    <div class="header-text">
+      <h1 class="modal-title">{{data?.isEdit? "Edytuj": "Dodaj"}} Sale</h1>
+      <p class="modal-subtitle">{{data?.isEdit? "Zaktualizuj informacje o sali" : "Dodaj nową salę treningową do systemu"}}</p>
+    </div>
+  </div>
 
-        <mat-form-field class="w-100 mb-2" >
-          <mat-label>Lokalizacja</mat-label>
-          <input matInput formControlName="Location">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="modal-form">
+    <div class="form-field">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sala</mat-label>
+        <input matInput formControlName="RoomName" placeholder="np. Sala 1">
+        <mat-icon matPrefix>meeting_room</mat-icon>
+        <mat-error *ngIf="formGroup.get('RoomName')?.hasError('required')">
+          Nazwa sali jest wymagana
+        </mat-error>
       </mat-form-field>
+    </div>
 
-        <button mat-flat-button color="primary" [disabled]="(addLoading$ | async) || formGroup.invalid">
-          {{data?.isEdit? "Edytuj": "Dodaj"}}
-        </button>
-    
-    
-    </form>
+    <div class="form-field">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Pojemność (osób)</mat-label>
+        <input matInput formControlName="Capacity" type="number" placeholder="np. 25">
+        <mat-icon matPrefix>group</mat-icon>
+        <mat-error *ngIf="formGroup.get('Capacity')?.hasError('required')">
+          Pojemność jest wymagana
+        </mat-error>
+      </mat-form-field>
+    </div>
 
+    <div class="form-field">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Lokalizacja</mat-label>
+        <input matInput formControlName="Location" placeholder="np. Bremen">
+        <mat-icon matPrefix>location_on</mat-icon>
+        <mat-error *ngIf="formGroup.get('Location')?.hasError('required')">
+          Lokalizacja jest wymagana
+        </mat-error>
+      </mat-form-field>
+    </div>
 
+    <div class="modal-actions">
+      <button mat-button type="button" class="cancel-button" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+        Anuluj
+      </button>
+      <button mat-flat-button type="submit" class="submit-button" [disabled]="(addLoading$ | async) || formGroup.invalid">
+        <mat-icon *ngIf="!(addLoading$ | async)">{{data?.isEdit? "edit" : "add"}}</mat-icon>
+        <mat-spinner *ngIf="addLoading$ | async" diameter="20"></mat-spinner>
+        {{data?.isEdit? "Zaktualizuj" : "Dodaj"}}
+      </button>
+    </div>
+  </form>
 </div>

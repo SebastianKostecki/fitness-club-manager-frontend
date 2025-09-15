@@ -1,9 +1,9 @@
 
   <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer mode="side" style="width: 200px;">
+    <mat-drawer #drawer mode="side" class="modern-drawer">
         <mat-nav-list>
             <mat-list-item 
-                *ngFor="let link of links"
+                *ngFor="let link of filteredLinks$ | async"
                 [routerLink]="link.path"
                 [routerLinkActiveOptions]="getIsHomePage(link) ? { exact: true } : { exact: false }"
                 routerLinkActive="is-active"
@@ -18,16 +18,18 @@
     </mat-drawer>
   
     <div class="min-vh-100 ">
-        <mat-toolbar color="primary" style="display: flex; align-items: center;">
-            <button mat-icon-button (click)="drawer.toggle()">
+        <mat-toolbar class="modern-header">
+            <button mat-icon-button (click)="drawer.toggle()" class="header-button">
               <mat-icon>menu</mat-icon>
             </button>
           
-            <span style="margin-left: 8px;">My App</span>
+            <div class="header-title">
+              <span class="app-name">Fitness Club Manager</span>
+            </div>
           
             <span style="flex: 1 1 auto;"></span>
           
-            <button mat-icon-button (click)="onLogout()">
+            <button mat-icon-button (click)="onLogout()" class="header-button">
               <mat-icon>logout</mat-icon>
             </button>
           </mat-toolbar>

@@ -1,54 +1,80 @@
-<h1>Sale</h1>
+<div class="rooms-container">
+  <div class="rooms-content">
+    <div class="rooms-header">
+      <div class="header-content">
+        <div class="title-section">
+          <h1 class="page-title">Sale treningowe</h1>
+          <p class="page-subtitle">Przeglądaj dostępne sale i sprawdź ich kalendarze</p>
+        </div>
+        <button *ngIf="canManageRooms()" mat-flat-button color="primary" class="add-button" (click)="add()">
+          <mat-icon>add</mat-icon>
+          Dodaj salę
+        </button>
+      </div>
+    </div>
 
-<button mat-flat-button color="primary" (click)="add()">Dodaj</button>
-<!-- 
-<mat-card *ngIf="(error$ | async)" class="bg-danger text-white">
-    <mat-card-content>{{(error$ | async)?.error.message}}</mat-card-content>
-  </mat-card> -->
+    <!-- Loading State -->
+    <div *ngIf="loading$ | async" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Ładowanie sal...</p>
+    </div>
 
-  <div>
-    <!-- <ng-container *ngIf="(loading$ | async)">
-        <p>Ładowanie . . .</p>
-      </ng-container> -->
+    <!-- Rooms Grid -->
+    <div *ngIf="!(loading$ | async)" class="rooms-grid">
+    <mat-card *ngFor="let room of rooms$ | async" class="room-card" (click)="viewCalendar(room.RoomID)">
+      <mat-card-header class="room-header">
+        <div mat-card-avatar class="room-avatar">
+          <mat-icon>meeting_room</mat-icon>
+        </div>
+        <mat-card-title class="room-title">{{ room.RoomName }}</mat-card-title>
+        <mat-card-subtitle class="room-location">
+          <mat-icon>location_on</mat-icon>
+          {{ room.Location }}
+        </mat-card-subtitle>
+      </mat-card-header>
 
-      <ng-container *ngIf="(rooms$ | async) as dataSource">
-        <table mat-table [dataSource]="dataSource">
-            
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> Id </th>
-                <td mat-cell *matCellDef="let element"> {{element.RoomID}} </td>
-            </ng-container>
+      <mat-card-content class="room-content">
+        <div class="room-info">
+          <div class="info-item">
+            <mat-icon>group</mat-icon>
+            <span class="info-label">Pojemność:</span>
+            <span class="info-value">{{ room.Capacity }} osób</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>schedule</mat-icon>
+            <span class="info-label">Status:</span>
+            <span class="info-value status-available">Dostępna</span>
+          </div>
+        </div>
+      </mat-card-content>
 
-            <ng-container matColumnDef="RoomName">
-                <th mat-header-cell *matHeaderCellDef> Nazwa sali </th>
-                <td mat-cell *matCellDef="let element"> {{element.RoomName}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="Capacity">
-                <th mat-header-cell *matHeaderCellDef> Pojemność </th>
-                <td mat-cell *matCellDef="let element"> {{element.Capacity}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="Lokalizacja">
-                <th mat-header-cell *matHeaderCellDef> Lokalizacja </th>
-                <td mat-cell *matCellDef="let element"> {{element.Location}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element">
-                  <button mat-icon-button color="warn" (click)="delete(element.RoomID)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                  <button mat-icon-button color="primary" (click)="edit(element)">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                </td>
-            </ng-container>
-            
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-      </ng-container>
+      <mat-card-actions class="room-actions">
+        <button mat-button color="primary" class="calendar-button" (click)="viewCalendar(room.RoomID); $event.stopPropagation()">
+          <mat-icon>calendar_month</mat-icon>
+          Zobacz kalendarz
+        </button>
+        
+        <div *ngIf="canManageRooms()" class="admin-actions">
+          <button mat-icon-button color="primary" (click)="edit(room); $event.stopPropagation()" title="Edytuj salę">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="delete(room.RoomID); $event.stopPropagation()" title="Usuń salę">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
   </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!(loading$ | async) && (rooms$ | async)?.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">meeting_room</mat-icon>
+      <h3>Brak dostępnych sal</h3>
+      <p>Nie ma jeszcze żadnych sal w systemie.</p>
+      <button *ngIf="canManageRooms()" mat-flat-button color="primary" (click)="add()">
+        <mat-icon>add</mat-icon>
+        Dodaj pierwszą salę
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="custom-calendar">
+  <!-- Calendar Header -->
+  <div class="calendar-header">
+    <div class="header-content">
+      <div class="navigation">
+        <button class="nav-button" (click)="previousMonth()">
+          ←
+        </button>
+        <button class="nav-button today-button" (click)="goToToday()">
+          Dzisiaj
+        </button>
+        <button class="nav-button" (click)="nextMonth()">
+          →
+        </button>
+      </div>
+      
+      <div class="month-year">
+        {{ getMonthYearString() }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Days of Week Header -->
+  <div class="weekdays-header">
+    <div class="weekday" *ngFor="let day of weekDays">
+      {{ day }}
+    </div>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="calendar-grid">
+    <div 
+      class="calendar-day" 
+      *ngFor="let day of calendarDays"
+      [class.other-month]="!day.isCurrentMonth"
+      [class.today]="day.isToday"
+      (click)="onDateClick(day.date)"
+    >
+      <div class="day-number">
+        {{ day.date.getDate() }}
+      </div>
+      
+      <div class="events-container">
+        <div 
+          class="event" 
+          *ngFor="let event of day.events"
+          [class]="getEventClass(event)"
+          [style]="getEventStyle(event)"
+          (click)="onEventClick(event); $event.stopPropagation()"
+        >
+          <div class="event-content">
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-time">
+              {{ event.start | date:'HH:mm' }} - {{ event.end | date:'HH:mm' }}
+            </div>
+            <div class="event-details" *ngIf="event.roomName">
+              📍 {{ event.roomName }}
+            </div>
+            <div class="event-details" *ngIf="event.trainerName">
+              👨‍🏫 {{ event.trainerName }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

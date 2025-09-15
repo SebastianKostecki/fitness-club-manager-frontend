@@ -1,27 +1,157 @@
-<header style="background: #3f51b5; color: #fff; padding: 20px 0; text-align: center; font-weight: bold; font-size: 2rem; letter-spacing: 1px;">
-  Fitness Club Manager
-</header>
+<!-- Navigation Header -->
+<mat-toolbar class="modern-header">
+  <div class="header-title">
+    <span class="app-name">Fitness Club Manager</span>
+  </div>
+  <span style="flex: 1 1 auto;"></span>
+</mat-toolbar>
 
-<main style="flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-  <div style="max-width: 400px; width: 100%; text-align: center;">
-    <mat-card style="background: #3f51b5; color: #fff;">
-      <mat-card-title>Witamy w Fitness Club Manager!</mat-card-title>
-      <mat-card-content>
-        <p>Zarządzaj swoim klubem fitness w nowoczesny, szybki i wygodny sposób. Nasza aplikacja umożliwia rezerwację sal, zapisy na zajęcia grupowe oraz dostęp do aktualnego grafiku wydarzeń. Zarejestruj się lub zaloguj, aby mieć dostęp do wszystkich funkcji, śledzić swoje rezerwacje i korzystać z oferty klubu na własnych zasadach.</p>
-      </mat-card-content>
-    </mat-card>
-    <div style="margin-top: 32px; display: flex; flex-direction: column; gap: 16px; align-items: center;">
-      <button mat-flat-button color="primary" (click)="goToLogin()">Logowanie</button>
-      <button mat-flat-button color="accent" (click)="goToRegister()">Rejestracja</button>
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 class="hero-title">
+        Twój fitness na <span class="highlight">nowym poziomie</span>
+      </h1>
+      <p class="hero-subtitle">
+        Profesjonalny system zarządzania klubem fitness. Rezerwuj sale, zapisuj się na zajęcia i śledź swoje postępy w jednym miejscu.
+      </p>
+      <div class="hero-actions">
+        <button mat-raised-button class="cta-primary" (click)="goToRegister()">
+          <mat-icon>rocket_launch</mat-icon>
+          Rozpocznij za darmo
+        </button>
+        <button mat-stroked-button class="cta-secondary" (click)="goToLogin()">
+          <mat-icon>login</mat-icon>
+          Zaloguj się
+        </button>
+        <button mat-stroked-button class="cta-tertiary" (click)="scrollToFeatures()">
+          <mat-icon>play_arrow</mat-icon>
+          Zobacz jak działa
+        </button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="dashboard-preview">
+        <div class="preview-card">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="preview-content">
+            <div class="preview-metric">
+              <div class="metric-value">24</div>
+              <div class="metric-label">Aktywne rezerwacje</div>
+            </div>
+            <div class="preview-calendar">
+              <div class="calendar-day active">12</div>
+              <div class="calendar-day">13</div>
+              <div class="calendar-day">14</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</main>
+</section>
 
-<footer style="background: #3f51b5; color: #fff; padding: 20px 0; text-align: center; margin-top: 48px; font-size: 1rem; flex-shrink: 0;">
-  <div>&copy; 2025 Fitness Club Manager. Wszelkie prawa zastrzeżone.</div>
-  <div>Kontakt: <a href="mailto:support@fitnessclub.com" style="color: #fff; text-decoration: underline;">support&#64;fitnessclub.com</a></div>
-  <div style="margin-top: 8px;">
-    <a href="#" style="color: #fff; margin: 0 8px; text-decoration: underline;">Polityka prywatności</a> |
-    <a href="#" style="color: #fff; margin: 0 8px; text-decoration: underline;">Regulamin</a>
+<!-- Features Section -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Wszystko czego potrzebujesz</h2>
+      <p class="section-subtitle">Kompleksowe narzędzia do zarządzania Twoim fitnessem</p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <mat-icon>event_available</mat-icon>
+        </div>
+        <h3>Rezerwacje online</h3>
+        <p>Rezerwuj sale i sprzęt w kilka kliknięć. System dostępny 24/7 z dowolnego urządzenia.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <mat-icon>groups</mat-icon>
+        </div>
+        <h3>Zajęcia grupowe</h3>
+        <p>Zapisuj się na zajęcia fitness, jogi, pilates i wiele innych. Pełna kontrola nad harmonogramem.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <mat-icon>analytics</mat-icon>
+        </div>
+        <h3>Śledź postępy</h3>
+        <p>Monitoruj swoje treningi, rezerwacje i uczestnictwo w zajęciach w przejrzysty sposób.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Aktywnych członków</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Rodzajów zajęć</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Dostępność systemu</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Zadowolenia klientów</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Gotowy na zmianę?</h2>
+      <p>Dołącz do naszej społeczności i zacznij swoje fitness journey już dziś!</p>
+      <div class="cta-buttons">
+        <button mat-raised-button class="cta-primary-large" (click)="goToRegister()">
+          <mat-icon>person_add</mat-icon>
+          Załóż konto bezpłatnie
+        </button>
+        <button mat-stroked-button class="cta-secondary-large" (click)="goToLogin()">
+          <mat-icon>login</mat-icon>
+          Mam już konto
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <mat-icon>fitness_center</mat-icon>
+        <span>Fitness Club Manager</span>
+      </div>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Polityka prywatności</a>
+        <a href="#" class="footer-link">Regulamin</a>
+        <a href="mailto:support@fitnessclub.com" class="footer-link">Kontakt</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Fitness Club Manager. Wszelkie prawa zastrzeżone.</p>
+    </div>
   </div>
 </footer>

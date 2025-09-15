@@ -1,0 +1,138 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="header-icon">
+      <mat-icon>fitness_center</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2>{{ classDetails.title }}</h2>
+      <p>Szczegóły zajęć fitness</p>
+    </div>
+    <button mat-icon-button (click)="onClose()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-content" *ngIf="!loading; else loadingTemplate">
+    <div class="class-info">
+      <div class="info-section">
+        <h3>📅 Informacje o zajęciach</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <mat-icon>schedule</mat-icon>
+            <div class="info-text">
+              <span class="label">Data i godzina:</span>
+              <span class="value">{{ formatDate(classDetails.startTime) }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon>access_time</mat-icon>
+            <div class="info-text">
+              <span class="label">Czas trwania:</span>
+              <span class="value">{{ formatTime(classDetails.startTime) }} - {{ formatTime(classDetails.endTime) }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item" *ngIf="classDetails.roomName">
+            <mat-icon>room</mat-icon>
+            <div class="info-text">
+              <span class="label">Sala:</span>
+              <span class="value">{{ classDetails.roomName }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item" *ngIf="classDetails.trainerName">
+            <mat-icon>person</mat-icon>
+            <div class="info-text">
+              <span class="label">Trener:</span>
+              <span class="value">{{ classDetails.trainerName }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="availability-section">
+        <h3>👥 Dostępność miejsc</h3>
+        <div class="availability-card" [class.full]="classDetails.isFull">
+          <div class="availability-header">
+            <mat-icon [style.color]="classDetails.isFull ? '#f44336' : '#4caf50'">
+              {{ classDetails.isFull ? 'person_off' : 'people' }}
+            </mat-icon>
+            <span class="availability-title">
+              {{ classDetails.isFull ? 'Brak wolnych miejsc' : 'Wolne miejsca' }}
+            </span>
+          </div>
+          
+          <div class="availability-stats">
+            <div class="stat">
+              <span class="stat-number">{{ classDetails.availableSpots || 0 }}</span>
+              <span class="stat-label">Wolnych</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">{{ classDetails.currentReservations || 0 }}</span>
+              <span class="stat-label">Zapisanych</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">{{ classDetails.capacity }}</span>
+              <span class="stat-label">Pojemność</span>
+            </div>
+          </div>
+          
+          <div class="progress-bar">
+            <div class="progress-fill" 
+                 [style.width.%]="((classDetails.currentReservations || 0) / classDetails.capacity) * 100">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-content">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Ładowanie szczegółów zajęć...</p>
+    </div>
+  </ng-template>
+
+  <div class="modal-actions" *ngIf="!loading">
+    <button mat-button (click)="onClose()">
+      <mat-icon>close</mat-icon>
+      Zamknij
+    </button>
+    
+    <!-- Book class button - show if user doesn't have reservation -->
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="bookClass()" 
+      [disabled]="classDetails.isFull || booking"
+      *ngIf="currentUser?.Role === 'regular' && !classDetails.userReservation">
+      <mat-icon *ngIf="!booking">{{ classDetails.isFull ? 'person_off' : 'event_available' }}</mat-icon>
+      <mat-spinner *ngIf="booking" diameter="20"></mat-spinner>
+      {{ classDetails.isFull ? 'Brak miejsc' : 'Zapisz się na zajęcia' }}
+    </button>
+    
+    <!-- Cancel reservation button - show if user has reservation -->
+    <button 
+      mat-raised-button 
+      color="warn" 
+      (click)="cancelReservation()" 
+      [disabled]="booking"
+      *ngIf="currentUser?.Role === 'regular' && classDetails.userReservation">
+      <mat-icon *ngIf="!booking">delete</mat-icon>
+      <mat-spinner *ngIf="booking" diameter="20"></mat-spinner>
+      Anuluj rezerwację
+    </button>
+    
+    <!-- Debug info -->
+    <div style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 5px; font-size: 12px;">
+      <strong>Debug:</strong><br>
+      User: {{ currentUser?.Username || 'Brak' }}<br>
+      Role: {{ currentUser?.Role || 'Brak' }}<br>
+      IsFull: {{ classDetails.isFull }}<br>
+      AvailableSpots: {{ classDetails.availableSpots }}<br>
+      UserReservation: {{ classDetails.userReservation ? 'Tak (ID: ' + classDetails.userReservation.id + ')' : 'Nie' }}
+    </div>
+  </div>
+</div>

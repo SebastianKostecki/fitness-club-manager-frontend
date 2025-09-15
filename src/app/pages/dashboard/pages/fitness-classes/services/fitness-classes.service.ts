@@ -47,7 +47,7 @@ export class FitnessClassesService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = 'https://fitness-club-manager-backend.onrender.com/classes';
+    const url = 'http://localhost:8080/classes';
     return this.http.get<any[]>(url).pipe(
       tap((res) => {
         this.items.next(res);
@@ -62,11 +62,21 @@ export class FitnessClassesService {
     );
   }
 
+  getClassById(classId: number) {
+    const url = `http://localhost:8080/classes/${classId}`;
+    return this.http.get<any>(url);
+  }
+
+  cancelReservation(reservationId: number) {
+    const url = `http://localhost:8080/reservations/${reservationId}`;
+    return this.http.delete<any>(url);
+  }
+
   addClass(fitnessClass: any) {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = 'https://fitness-club-manager-backend.onrender.com/classes';
+    const url = 'http://localhost:8080/classes';
     return this.http.post(url, fitnessClass).pipe(
       tap((res) => {
         this.addSuccess.next(true);
@@ -81,11 +91,16 @@ export class FitnessClassesService {
     );
   }
 
+  createFitnessClass(classData: any): Observable<any> {
+    const url = 'http://localhost:8080/calendar/classes';
+    return this.http.post(url, classData);
+  }
+
   deleteClass(classId: number) {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = 'https://fitness-club-manager-backend.onrender.com/classes/' + classId;
+    const url = 'http://localhost:8080/classes/' + classId;
     return this.http.delete(url).pipe(
       tap((res) => {
         this.deleteSuccess.next(true);
@@ -104,7 +119,7 @@ export class FitnessClassesService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = 'https://fitness-club-manager-backend.onrender.com/classes/' + classId;
+    const url = 'http://localhost:8080/classes/' + classId;
     return this.http.put(url, fitnessClass).pipe(
       tap((res) => {
         this.editSuccess.next(true);
@@ -115,6 +130,27 @@ export class FitnessClassesService {
         console.log(err);
         this.editError.next(err);
         return EMPTY;
+      })
+    );
+  }
+
+  bookClass(classId: number, userId: number) {
+    const url = 'http://localhost:8080/reservations';
+    const reservationData = {
+      UserID: userId,
+      ClassID: classId,
+      Status: 'confirmed'
+    };
+    
+    return this.http.post(url, reservationData).pipe(
+      tap((res) => {
+        console.log('Successfully booked class:', res);
+        // Refresh classes to update available spots
+        this.getClasses().subscribe();
+      }),
+      catchError((err) => {
+        console.error('Error booking class:', err);
+        throw err;
       })
     );
   }

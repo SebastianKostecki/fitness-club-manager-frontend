@@ -1,0 +1,117 @@
+<div class="room-calendar">
+  <!-- Calendar Header -->
+  <div class="calendar-header">
+    <div class="header-content">
+      <div class="room-info">
+        <h2 class="room-title">{{ roomName }}</h2>
+        <p class="room-subtitle">Kalendarz sali</p>
+      </div>
+      
+      <div class="navigation">
+        <button class="nav-button" (click)="navigateMonth('prev')">
+          ←
+        </button>
+        <button class="nav-button today-button" (click)="goToToday()">
+          Dzisiaj
+        </button>
+        <button class="nav-button" (click)="navigateMonth('next')">
+          →
+        </button>
+      </div>
+      
+      <div class="month-year">
+        {{ getMonthName() }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="calendar-legend">
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: #3B82F6;"></div>
+      <span>Rezerwacje sal</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: #F59E0B;"></div>
+      <span>Zajęcia (wolne miejsca)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background-color: #EF4444;"></div>
+      <span>Zajęcia (brak miejsc)</span>
+    </div>
+  </div>
+
+  <!-- Days of Week Header -->
+  <div class="weekdays-header">
+    <div class="weekday" *ngFor="let day of weekDays">
+      {{ day }}
+    </div>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="calendar-grid" *ngIf="!loading">
+    <div 
+      class="calendar-day" 
+      *ngFor="let day of calendarDays"
+      [class.other-month]="day.isOtherMonth"
+      [class.today]="day.isToday"
+      (click)="onDateClick(day.date)"
+    >
+      <div class="day-number">{{ day.dayNumber }}</div>
+      
+      <div class="day-events">
+        <div 
+          class="event-item" 
+          *ngFor="let event of getEventsForDate(day.date)"
+          [style.background-color]="event.color"
+          [title]="getEventTooltip(event)"
+          (click)="onEventClick(event); $event.stopPropagation()"
+        >
+          <span class="event-title">{{ event.title }}</span>
+          <span class="event-time" *ngIf="event.type === 'fitness_class'">
+            {{ event.meta.availableSpots }}/{{ event.meta.capacity }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Ładowanie kalendarza...</p>
+  </div>
+
+  <!-- Equipment Section -->
+  <div class="equipment-section" *ngIf="equipment && equipment.length > 0">
+    <div class="equipment-header">
+      <h3 class="equipment-title">
+        <span class="equipment-icon">🏋️</span>
+        Sprzęt dostępny w sali
+      </h3>
+    </div>
+    
+    <div class="equipment-grid">
+      <div class="equipment-item" *ngFor="let item of equipment">
+        <div class="equipment-card">
+          <div class="equipment-name">{{ item.EquipmentName }}</div>
+          <div class="equipment-quantity">
+            <span class="quantity-badge">{{ item.Quantity }}</span>
+            <span class="quantity-label">szt.</span>
+          </div>
+          <div class="equipment-description" *ngIf="item.Description">
+            {{ item.Description }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Equipment State -->
+  <div class="no-equipment" *ngIf="equipment && equipment.length === 0">
+    <div class="no-equipment-content">
+      <span class="no-equipment-icon">📦</span>
+      <p class="no-equipment-text">Brak informacji o sprzęcie w tej sali</p>
+    </div>
+  </div>
+</div>

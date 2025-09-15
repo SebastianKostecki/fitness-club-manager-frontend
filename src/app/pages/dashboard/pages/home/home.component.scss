@@ -1,10 +1,1207 @@
 .user-card {
-  padding: 20px;
-  max-width: 300px;
-  background: linear-gradient(45deg, #3f51b5, #6270c2);
+  padding: 24px;
+  max-width: 350px;
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+  color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(142, 45, 226, 0.3);
+  border: none;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(142, 45, 226, 0.4);
+  }
+  
+  mat-card-title {
+    font-size: 24px;
+    font-weight: 700;
     color: white;
-  dl{
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 8px;
+  }
+  
+  .role-section {
+    margin: 16px 0;
+    
+    .role-display {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
+      
+      .role-icon {
+        font-size: 32px;
+        margin-right: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+      }
+      
+      .role-info {
+        flex: 1;
+        
+        .role-title {
+          font-size: 18px;
+          font-weight: 700;
+    color: white;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          margin-bottom: 4px;
+        }
+        
+        .role-subtitle {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: 500;
+        }
+      }
+      
+      // Role-specific colors
+      &.role-admin {
+        background: rgba(255, 193, 7, 0.2);
+        border-color: rgba(255, 193, 7, 0.3);
+        
+        .role-icon {
+          background: rgba(255, 193, 7, 0.3);
+        }
+        
+        .role-title {
+          color: #ffc107;
+        }
+      }
+      
+      &.role-trainer {
+        background: rgba(40, 167, 69, 0.2);
+        border-color: rgba(40, 167, 69, 0.3);
+        
+        .role-icon {
+          background: rgba(40, 167, 69, 0.3);
+        }
+        
+        .role-title {
+          color: #28a745;
+        }
+      }
+      
+      &.role-receptionist {
+        background: rgba(23, 162, 184, 0.2);
+        border-color: rgba(23, 162, 184, 0.3);
+        
+        .role-icon {
+          background: rgba(23, 162, 184, 0.3);
+        }
+        
+        .role-title {
+          color: #17a2b8;
+        }
+      }
+      
+      &.role-regular {
+        background: rgba(108, 117, 125, 0.2);
+        border-color: rgba(108, 117, 125, 0.3);
+        
+        .role-icon {
+          background: rgba(108, 117, 125, 0.3);
+        }
+        
+        .role-title {
+          color: #6c757d;
+        }
+      }
+    }
+  }
+
+  mat-card-subtitle {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+  }
+  
+  dl {
     margin: 0;
     margin-top: 20px;
+    
+    dt {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    dd {
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 12px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      
+      &.mb-0 {
+        margin-bottom: 0;
+      }
+      
+      .no-events {
+        color: rgba(255, 255, 255, 0.7);
+        font-style: italic;
+        font-size: 16px;
+      }
+      
+      .events-count {
+        font-size: 24px;
+        font-weight: 700;
+        color: #ffc107;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      .events-label {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-left: 8px;
+      }
+    }
   }
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Admin Dashboard */
+.admin-dashboard {
+  .metric-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    
+    mat-card-title {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    
+    .metric-item {
+      text-align: center;
+      padding: 24px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+      
+      .metric-value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #ffc107;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 12px;
+        display: block;
+      }
+      
+      .metric-label {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        line-height: 1.3;
+      }
+    }
+  }
+}
+
+/* Trainer Dashboard */
+.trainer-dashboard {
+  .classes-card {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(17, 153, 142, 0.3);
+    padding: 20px;
+    
+    mat-card-title {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .upcoming-classes {
+    .class-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      
+      .class-time {
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffc107;
+        margin-right: 16px;
+        min-width: 60px;
+      }
+      
+      .class-details {
+        flex: 1;
+        
+        .class-name {
+          font-size: 16px;
+          font-weight: 600;
+          color: white;
+          margin-bottom: 4px;
+        }
+        
+        .class-room {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+    
+    .no-classes {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+      padding: 20px;
+    }
+  }
+}
+
+/* Receptionist Dashboard */
+.receptionist-dashboard {
+  .metric-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    
+    mat-card-title {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    
+    .metric-item {
+      text-align: center;
+      padding: 24px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+      
+      .metric-value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #ffc107;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 12px;
+        display: block;
+      }
+      
+      .metric-label {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        line-height: 1.3;
+      }
+    }
+  }
+  
+  .reservations-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    
+    mat-card-title {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .reservation-list {
+    .reservation-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      
+      .reservation-time {
+        font-size: 18px;
+        font-weight: 700;
+        color: #ffc107;
+        margin-right: 16px;
+        min-width: 60px;
+      }
+      
+      .reservation-details {
+        flex: 1;
+        
+        .reservation-name {
+          font-size: 16px;
+          font-weight: 600;
+          color: white;
+          margin-bottom: 4px;
+        }
+        
+        .reservation-user {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.8);
+        }
+      }
+      
+      .reservation-actions {
+        display: flex;
+        gap: 8px;
+      }
+    }
+    
+    .no-reservations {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+      padding: 20px;
+    }
+  }
+}
+
+/* User Dashboard */
+.user-dashboard {
+  .my-reservations-card {
+    background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+    color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(142, 45, 226, 0.3);
+    padding: 24px;
+    
+    mat-card-title {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    dl {
+      margin: 0;
+      
+      dt {
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0.9;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      dd {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        margin-left: 0;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        
+        &.mb-0 {
+          margin-bottom: 0;
+        }
+      }
+    }
+    
+    .no-events {
+      opacity: 0.7;
+      font-style: italic;
+    }
+    
+    .events-count {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffc107;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      display: inline-block;
+      background: rgba(255, 193, 7, 0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 2px solid rgba(255, 193, 7, 0.3);
+    }
+    
+    .events-label {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-left: 12px;
+    }
+  }
+  
+}
+
+/* Action Cards */
+.action-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  border: none;
+  padding: 24px;
+  
+  mat-card-title {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+    .become-trainer-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+    
+    .action-btn {
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: none;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      
+      &:active {
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+/* Admin Actions - Bigger buttons */
+.admin-actions {
+  .action-buttons {
+    gap: 20px;
+    
+    .admin-btn {
+      padding: 24px 32px;
+      font-size: 18px;
+      min-height: 60px;
+      
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+}
+
+/* Trainer Actions - One big button */
+.trainer-actions {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  
+  .action-buttons {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    
+    .trainer-btn {
+      width: 100%;
+      max-width: 500px;
+      padding: 48px 40px;
+      font-size: 24px;
+      font-weight: 800;
+      min-height: 120px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      
+      &:hover {
+        transform: scale(1.02);
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 
+          0 12px 40px rgba(0, 0, 0, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      }
+      
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+@keyframes trainerBackground {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-10px, -5px) rotate(1deg);
+  }
+}
+
+/* User Actions - One big button */
+.user-actions {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  
+  .action-buttons {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    
+    .user-btn {
+      width: 100%;
+      max-width: 500px;
+      padding: 48px 40px;
+      font-size: 24px;
+      font-weight: 800;
+      min-height: 120px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      
+      &:hover {
+        transform: scale(1.02);
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 
+          0 12px 40px rgba(0, 0, 0, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      }
+      
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+@keyframes userBackground {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(-8px, -3px) rotate(0.5deg);
+  }
+  66% {
+    transform: translate(5px, -8px) rotate(-0.5deg);
+  }
+}
+
+/* Action Modal */
+.action-modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000 !important;
+  animation: modalFadeIn 0.3s ease;
+  pointer-events: auto !important;
+}
+
+.action-modal {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  animation: modalSlideIn 0.3s ease;
+  z-index: 10001 !important;
+  position: relative;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.modal-content {
+  padding: 24px;
+  
+  .trainer-info-content {
+    .trainer-info-text {
+      color: #374151;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+    
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f8fafc;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background: #f1f5f9;
+          border-color: #cbd5e1;
+        }
+        
+        .contact-icon {
+          color: #f59e0b;
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+        
+        .contact-text {
+          color: #1f2937;
+          font-size: 16px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+  }
+}
+
+.action-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.action-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  width: 100%;
+  
+  &:hover {
+    border-color: #667eea;
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  }
+}
+
+.option-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.option-content {
+  flex: 1;
+}
+
+.option-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.option-description {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Form Styles */
+.reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  }
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+  
+  &:hover {
+    background: #e5e7eb;
+    border-color: #d1d5db;
+  }
+}
+
+/* Class List Styles */
+.class-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.class-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  }
+}
+
+.class-info {
+  flex: 1;
+  
+  h4 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #6b7280;
+  }
+}
+
+/* Modern Calendar Container */
+.calendar-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 24px;
+}
+
+.modern-calendar-header {
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 16px 16px 0 0;
+  
+  .btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    &.btn-primary {
+      background: rgba(255, 255, 255, 0.9);
+      color: #8e2de2;
+      font-weight: 600;
+    }
+  }
+  
+  .btn-group .btn {
+    margin: 0 2px;
+  }
+  
+  .btn-group .btn.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #8e2de2;
+    font-weight: 600;
+  }
+}
+
+/* Calendar View Styles */
+mwl-calendar-month-view,
+mwl-calendar-week-view,
+mwl-calendar-day-view {
+  background: white;
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+  
+  .cal-cell {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 2px;
+    border: 1px solid #f0f0f0;
+    
+    &:hover {
+      background-color: rgba(142, 45, 226, 0.1);
+      transform: scale(1.02);
+    }
+  }
+  
+  .cal-today {
+    background: linear-gradient(135deg, #8e2de2, #4a00e0) !important;
+    color: white !important;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(142, 45, 226, 0.3);
+    border: none !important;
+  }
+  
+  .cal-event {
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    color: white;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin: 2px 0;
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(142, 45, 226, 0.3);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(142, 45, 226, 0.4);
+    }
+  }
+  
+  /* Fix for any weird lines or artifacts */
+  .cal-row {
+    border: none !important;
+  }
+  
+  .cal-cell-row {
+    border: none !important;
+  }
+  
+  /* Remove any horizontal lines */
+  hr, .cal-divider, .cal-separator {
+    display: none !important;
+  }
+}
+
+/* SnackBar Styles */
+::ng-deep .success-snackbar {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3) !important;
+}
+
+::ng-deep .error-snackbar {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3) !important;
+}
+
+::ng-deep .mat-mdc-snack-bar-container {
+  margin: 16px !important;
+  max-width: 400px !important;
+}
+
+/* Class signup modal styles */
+.no-classes {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-style: italic;
+}
+
+.class-item button:disabled {
+  background: #ccc !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+
+/* Reservation management styles */
+.reservation-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.reservation-actions button {
+  transition: all 0.2s ease;
+}
+
+.reservation-actions button:hover {
+  transform: scale(1.1);
+}
+
+.reservation-actions button[color="primary"]:hover {
+  background-color: rgba(76, 175, 80, 0.1) !important;
+}
+
+.reservation-actions button[color="warn"]:hover {
+  background-color: rgba(244, 67, 54, 0.1) !important;
+}
+
+/* Reservation status styles */
+.reservation-status {
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.status-confirmed, .status-active {
+  color: #4CAF50;
+}
+
+.status-pending {
+  color: #FF9800;
+}
+
+.status-cancelled {
+  color: #f44336;
 }
