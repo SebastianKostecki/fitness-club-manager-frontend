@@ -50,8 +50,8 @@ export class AddEditReservationDialogComponent implements OnInit {
       this.formGroup.patchValue(this.data.reservation);
     }
 
-    this.http.get<any[]>('${environment.apiUrl}/users').subscribe((users) => (this.users = users));
-    this.http.get<any[]>('${environment.apiUrl}/classes').subscribe((classes) => (this.classes = classes));
+    this.http.get<any[]>(`${environment.apiUrl}/users`).subscribe((users) => (this.users = users));
+    this.http.get<any[]>(`${environment.apiUrl}/classes`).subscribe((classes) => (this.classes = classes));
 
     this.reservationsService.addSuccess$.subscribe((success) => {
       if (success) {

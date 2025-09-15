@@ -41,7 +41,7 @@ export class RoomEquipmentsService {
   getRoomEquipments() {
     this.loading.next(true);
     this.error.next(null);
-    const url = '${environment.apiUrl}/room-equipment';
+    const url = `${environment.apiUrl}/room-equipment`;
     return this.http.get<any[]>(url).pipe(
       tap((res) => {
         this.items.next(res);
@@ -61,7 +61,7 @@ export class RoomEquipmentsService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = '${environment.apiUrl}/room-equipment';
+    const url = `${environment.apiUrl}/room-equipment`;
     return this.http.post(url, data).pipe(
       tap(() => {
         this.addSuccess.next(true);

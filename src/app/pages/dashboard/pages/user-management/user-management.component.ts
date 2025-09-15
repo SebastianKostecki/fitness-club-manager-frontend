@@ -55,7 +55,7 @@ export class UserManagementComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.currentUser$ = this.userService.currentUser$;
-    this.users$ = this.http.get<{users: User[]}>('${environment.apiUrl}/users').pipe(
+    this.users$ = this.http.get<{users: User[]}>(`${environment.apiUrl}/users`).pipe(
       map(response => response.users.map(user => ({
         ...user,
         isEditing: false,
@@ -448,7 +448,7 @@ export class UserManagementComponent implements OnInit {
           panelClass: ['success-snackbar']
         });
         // Refresh the users list
-        this.users$ = this.http.get<{users: User[]}>('${environment.apiUrl}/users').pipe(
+        this.users$ = this.http.get<{users: User[]}>(`${environment.apiUrl}/users`).pipe(
           map(response => response.users.map(user => ({
             ...user,
             isEditing: false,

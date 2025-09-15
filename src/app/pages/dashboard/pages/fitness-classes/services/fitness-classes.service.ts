@@ -48,7 +48,7 @@ export class FitnessClassesService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = '${environment.apiUrl}/classes';
+    const url = `${environment.apiUrl}/classes`;
     return this.http.get<any[]>(url).pipe(
       tap((res) => {
         this.items.next(res);
@@ -77,7 +77,7 @@ export class FitnessClassesService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = '${environment.apiUrl}/classes';
+    const url = `${environment.apiUrl}/classes`;
     return this.http.post(url, fitnessClass).pipe(
       tap((res) => {
         this.addSuccess.next(true);
@@ -93,7 +93,7 @@ export class FitnessClassesService {
   }
 
   createFitnessClass(classData: any): Observable<any> {
-    const url = '${environment.apiUrl}/calendar/classes';
+    const url = `${environment.apiUrl}/calendar/classes`;
     return this.http.post(url, classData);
   }
 
@@ -101,7 +101,7 @@ export class FitnessClassesService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = '${environment.apiUrl}/classes/' + classId;
+    const url = `${environment.apiUrl}/classes/` + classId;
     return this.http.delete(url).pipe(
       tap((res) => {
         this.deleteSuccess.next(true);
@@ -120,7 +120,7 @@ export class FitnessClassesService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = '${environment.apiUrl}/classes/' + classId;
+    const url = `${environment.apiUrl}/classes/` + classId;
     return this.http.put(url, fitnessClass).pipe(
       tap((res) => {
         this.editSuccess.next(true);
@@ -136,7 +136,7 @@ export class FitnessClassesService {
   }
 
   bookClass(classId: number, userId: number) {
-    const url = '${environment.apiUrl}/reservations';
+    const url = `${environment.apiUrl}/reservations`;
     const reservationData = {
       UserID: userId,
       ClassID: classId,

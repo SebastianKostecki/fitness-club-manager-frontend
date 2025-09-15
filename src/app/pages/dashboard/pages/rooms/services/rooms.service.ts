@@ -51,7 +51,7 @@ export class RoomsService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url= '${environment.apiUrl}/rooms';
+    const url= `${environment.apiUrl}/rooms`;
     return this.http.get<any[]>(url).pipe(
       tap((res)=>{
         this.items.next(res);
@@ -73,7 +73,7 @@ export class RoomsService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = '${environment.apiUrl}/rooms';
+    const url = `${environment.apiUrl}/rooms`;
     return this.http.post(url, room).pipe(
       tap((res)=>{
         this.addSuccess.next(true);
@@ -95,7 +95,7 @@ export class RoomsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = '${environment.apiUrl}/rooms/' + roomId;
+    const url = `${environment.apiUrl}/rooms/` + roomId;
     console.log('Serwis: Wysyłam DELETE request na URL:', url);
     return this.http.delete(url).pipe(
       tap((res)=>{
@@ -127,7 +127,7 @@ export class RoomsService {
     this.editLoading.next(true);
     this.editError.next(null);
     this.editSuccess.next(false);
-    const url = '${environment.apiUrl}/rooms/' + roomId;
+    const url = `${environment.apiUrl}/rooms/` + roomId;
     return this.http.put(url, room).pipe(
       tap((res)=>{
         this.editSuccess.next(true);

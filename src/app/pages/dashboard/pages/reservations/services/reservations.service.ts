@@ -86,7 +86,7 @@ export class ReservationsService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = '${environment.apiUrl}/reservations/raw';
+    const url = `${environment.apiUrl}/reservations/raw`;
     return this.http.get<any[]>(url).pipe(
       tap(res => {
         console.log('Dane z backendu:', res);
@@ -135,7 +135,7 @@ export class ReservationsService {
     this.addLoading.next(true);
     this.addError.next(null);
     this.addSuccess.next(false);
-    const url = '${environment.apiUrl}/reservations';
+    const url = `${environment.apiUrl}/reservations`;
     return this.http.post(url, reservation).pipe(
       tap(() => {
         this.addSuccess.next(true);
