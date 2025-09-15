@@ -104,7 +104,7 @@ export class UserManagementComponent implements OnInit {
       return;
     }
 
-    this.http.put(`${environment.apiUrl}/users/${user.UserID}`, {
+    this.http.put(`${environment.apiUrl}/users/${user.UserID}/role`, {
       Role: user.newRole
     }).subscribe({
       next: () => {

@@ -113,8 +113,7 @@ export class UsersComponent implements OnInit{
     
     dialogRef.afterClosed().subscribe((newRole) => {
       if (newRole && newRole !== user.Role) {
-        const updatedUser = { ...user, Role: newRole };
-        this.usersService.editUser(user.UserID, updatedUser).subscribe();
+        this.usersService.changeUserRole(user.UserID, newRole).subscribe();
       }
     });
   }

@@ -143,5 +143,26 @@ export class UsersService {
 
   }
 
+  changeUserRole(userId: number, newRole: string) {
+    this.editLoading.next(true);
+    this.editError.next(null);
+    this.editSuccess.next(false);
+    const url = `${environment.apiUrl}/users/${userId}/role`;
+    return this.http.put(url, { Role: newRole }).pipe(
+      tap((res) => {
+        this.editSuccess.next(true);
+        this.getUsers().subscribe();
+      }),
+      finalize(() => {
+        this.editLoading.next(false);
+      }),
+      catchError((err) => {
+        console.log(err);
+        this.editError.next(err);
+        return EMPTY;
+      })
+    );
+  }
+
 
 }
