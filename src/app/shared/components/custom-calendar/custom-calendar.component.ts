@@ -14,21 +14,7 @@ export interface CalendarEvent {
   trainerName?: string;
   userName?: string;
   status: string;
-  meta?: {
-    reservationId?: number;
-    classId?: number;
-    userName?: string;
-    userEmail?: string;
-    trainerName?: string;
-    capacity?: number;
-    availableSpots?: number;
-    currentReservations?: number;
-    isFull?: boolean;
-    userReservation?: {
-      id: number;
-      status: string;
-    } | null;
-  };
+  meta?: any; // Add meta property for additional event data
 }
 
 export interface CalendarDay {
@@ -53,7 +39,6 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
   @Output() eventClick = new EventEmitter<CalendarEvent>();
   @Output() dateClick = new EventEmitter<Date>();
   @Output() monthChange = new EventEmitter<Date>();
-  @Output() eventDeleted = new EventEmitter<CalendarEvent>();
   @Output() reservationDeleted = new EventEmitter<void>();
 
   currentMonth: Date = new Date();
@@ -156,63 +141,6 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
     this.eventClick.emit(event);
   }
 
-  canDeleteEvent(event: CalendarEvent): boolean {
-    // Can delete if it's a user's reservation and not in the past
-    const now = new Date();
-    const eventStart = new Date(event.start);
-    
-    // Don't allow deletion of past events
-    if (eventStart <= now) {
-      return false;
-    }
-    
-    // Can delete if it's a user's reservation (has reservationId in meta)
-    return !!(event.meta?.reservationId);
-  }
-
-  onDeleteEvent(event: CalendarEvent): void {
-    console.log('Deleting event:', event);
-    
-    if (event.type === 'room_reservation') {
-      // Delete room reservation
-      if (event.meta?.reservationId) {
-        this.reservationsService.deleteRoomReservation(event.meta.reservationId.toString()).subscribe({
-          next: (response) => {
-            console.log('✅ Room reservation deleted:', response);
-            // Emit event to parent to refresh calendar
-            this.eventDeleted.emit(event);
-          },
-          error: (error) => {
-            console.error('❌ Error deleting room reservation:', error);
-          }
-        });
-      }
-    } else if (event.type === 'trainer_class') {
-      // Delete trainer class (cancel the class)
-      if (event.meta?.classId) {
-        // For trainer classes, we might want to cancel the class instead of deleting
-        // This would require a different API endpoint
-        console.log('Trainer class cancellation not implemented yet');
-        // TODO: Implement trainer class cancellation
-      }
-    } else if (event.type === 'fitness_class') {
-      // Cancel class reservation
-      if (event.meta?.reservationId) {
-        const updateData = { Status: 'cancelled' };
-        this.reservationsService.editReservation(event.meta.reservationId, updateData).subscribe({
-          next: (response) => {
-            console.log('✅ Class reservation cancelled:', response);
-            // Emit event to parent to refresh calendar
-            this.eventDeleted.emit(event);
-          },
-          error: (error) => {
-            console.error('❌ Error cancelling class reservation:', error);
-          }
-        });
-      }
-    }
-  }
-
   onDateClick(date: Date) {
     console.log('Date clicked:', date);
     const dayEvents = this.getEventsForDate(date);
@@ -238,13 +166,6 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
         'border': '1px solid rgba(255, 255, 255, 0.2)',
         'text-shadow': '0 1px 2px rgba(0, 0, 0, 0.4)'
       };
-    } else if (event.type === 'trainer_class') {
-      return {
-        'background': 'linear-gradient(135deg, #7c3aed, #a855f7)',
-        'color': 'white',
-        'border': '1px solid rgba(255, 255, 255, 0.2)',
-        'text-shadow': '0 1px 2px rgba(0, 0, 0, 0.4)'
-      };
     } else if (event.type === 'room_reservation') {
       return {
         'background': 'linear-gradient(135deg, #166534, #22c55e)',
@@ -262,19 +183,6 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
 
   openReservationsModal(date: Date, events: CalendarEvent[]) {
     console.log('openReservationsModal called with:', { date, events });
-    
-    // Debug each event to see its structure
-    events.forEach((event, index) => {
-      console.log(`Event ${index}:`, {
-        id: event.id,
-        type: event.type,
-        title: event.title,
-        meta: event.meta,
-        userReservation: event.meta?.userReservation,
-        hasUserReservation: !!event.meta?.userReservation?.id,
-        isRoomReservation: event.type === 'room_reservation'
-      });
-    });
     
     // Create simple HTML modal
     const modal = document.createElement('div');
@@ -301,24 +209,7 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
                   ${event.trainerName ? `<span class="trainer">• ${event.trainerName}</span>` : ''}
                 </div>
               </div>
-              ${(() => {
-                // Show delete button if:
-                // 1. It's a room reservation (user can always delete their room reservations)
-                // 2. It's a fitness class and user has a reservation (either userReservation.id or reservationId exists)
-                const shouldShowDelete = event.type === 'room_reservation' || 
-                                       event.meta?.userReservation?.id || 
-                                       (event.type === 'fitness_class' && event.meta?.reservationId);
-                console.log(`Delete button for ${event.title}:`, {
-                  type: event.type,
-                  hasUserReservation: !!event.meta?.userReservation?.id,
-                  hasReservationId: !!event.meta?.reservationId,
-                  reservationId: event.meta?.reservationId,
-                  userReservation: event.meta?.userReservation,
-                  fullMeta: event.meta,
-                  shouldShow: shouldShowDelete
-                });
-                return shouldShowDelete ? `<button class="delete-btn" data-id="${event.id.replace('room-', '').replace('class-', '')}" data-type="${event.type}" data-reservation-id="${event.meta?.userReservation?.id || event.meta?.reservationId || ''}" title="Usuń rezerwację">🗑️</button>` : '';
-              })()}
+              <button class="delete-btn" data-id="${event.id.replace('room-', '').replace('class-', '')}" data-type="${event.type}" title="Usuń rezerwację">🗑️</button>
             </div>
           `).join('')}
         </div>
@@ -471,9 +362,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
         
         const id = btn.getAttribute('data-id');
         const type = btn.getAttribute('data-type');
-        const reservationId = btn.getAttribute('data-reservation-id');
         
-        console.log('🗑️ Delete button clicked with:', { id, type, reservationId, button: btn });
+        console.log('🗑️ Delete button clicked with:', { id, type, button: btn });
         
         if (!id || !type) {
           console.error('Missing id or type for deletion');
@@ -482,13 +372,13 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
         
         // Show confirmation modal
         console.log('🗑️ Calling showDeleteConfirmation...');
-        this.showDeleteConfirmation(id, type, 'Rezerwacja', modal, style, date, reservationId || undefined);
+        this.showDeleteConfirmation(id, type, 'Rezerwacja', modal, style, date);
       });
     });
     
     // Add direct delete function to window
-    (window as any).deleteReservationDirect = async (id: string, type: string, reservationId?: string) => {
-      console.log('🗑️ deleteReservationDirect called with:', { id, type, reservationId });
+    (window as any).deleteReservationDirect = async (id: string, type: string) => {
+      console.log('🗑️ deleteReservationDirect called with:', { id, type });
       
       // Show loading message
       this.showSuccessMessage('🗑️ Usuwanie rezerwacji...');
@@ -499,10 +389,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
             console.log('🗑️ Deleting room reservation with ID:', id);
             await this.reservationsService.deleteRoomReservation(id).toPromise();
           } else {
-            // For fitness classes, use reservationId if available, otherwise use id
-            const actualReservationId = reservationId || id;
-            console.log('🗑️ Deleting class reservation with ID:', actualReservationId);
-            await this.reservationsService.deleteClassReservation(actualReservationId).toPromise();
+            console.log('🗑️ Deleting class reservation with ID:', id);
+            await this.reservationsService.deleteClassReservation(id).toPromise();
           }
           console.log('✅ Reservation deleted successfully in background');
           
@@ -538,7 +426,7 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
     };
     
     // Add delete function to window (for backward compatibility)
-    (window as any).deleteReservation = async (id: string, type: string, reservationId?: string) => {
+    (window as any).deleteReservation = async (id: string, type: string) => {
       // Create beautiful confirmation dialog
       const confirmModal = document.createElement('div');
       confirmModal.className = 'confirm-modal-overlay';
@@ -550,7 +438,7 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
           <p class="confirm-warning">Ta akcja nie może zostać cofnięta.</p>
           <div class="confirm-buttons">
             <button class="cancel-btn" onclick="this.closest('.confirm-modal-overlay').remove()">Anuluj</button>
-            <button class="delete-confirm-btn" data-id="${id}" data-type="${type}" data-reservation-id="${reservationId || ''}">Tak, usuń</button>
+            <button class="delete-confirm-btn" data-id="${id}" data-type="${type}">Tak, usuń</button>
           </div>
         </div>
       `;
@@ -714,9 +602,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
         deleteBtn.addEventListener('click', async () => {
           const id = deleteBtn.getAttribute('data-id');
           const type = deleteBtn.getAttribute('data-type');
-          const reservationId = deleteBtn.getAttribute('data-reservation-id');
           
-          console.log('🗑️ Delete button clicked with:', { id, type, reservationId });
+          console.log('🗑️ Delete button clicked with:', { id, type });
           
           if (!id || !type) {
             console.error('Missing id or type for deletion');
@@ -745,21 +632,19 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
             console.log('✅ Modals removed with alternative method');
           }
           
+          // Show success message immediately
+          this.showSuccessMessage('✅ Rezerwacja została usunięta pomyślnie!');
+          
           // Delete in background and refresh calendar
           try {
             if (type === 'room_reservation') {
               console.log('🗑️ Deleting room reservation with ID:', id);
               await this.reservationsService.deleteRoomReservation(id).toPromise();
             } else {
-              // For fitness classes, use reservationId if available, otherwise use id
-              const actualReservationId = reservationId || id;
-              console.log('🗑️ Deleting class reservation with ID:', actualReservationId);
-              await this.reservationsService.deleteClassReservation(actualReservationId).toPromise();
+              console.log('🗑️ Deleting class reservation with ID:', id);
+              await this.reservationsService.deleteClassReservation(id).toPromise();
             }
             console.log('✅ Reservation deleted successfully in background');
-            
-            // Show success message only after successful deletion
-            this.showSuccessMessage('✅ Rezerwacja została usunięta pomyślnie!');
             
             // Update the events array to remove the deleted reservation
             const deletedEventId = type === 'room_reservation' ? `room-${id}` : `class-${id}`;
@@ -805,8 +690,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
     };
   }
 
-  private showDeleteConfirmation(id: string, type: string, title: string, parentModal: HTMLElement, parentStyle: HTMLElement, date: Date, reservationId?: string) {
-    console.log('🗑️ showDeleteConfirmation called with:', { id, type, title, parentModal, parentStyle, reservationId });
+  private showDeleteConfirmation(id: string, type: string, title: string, parentModal: HTMLElement, parentStyle: HTMLElement, date: Date) {
+    console.log('🗑️ showDeleteConfirmation called with:', { id, type, title, parentModal, parentStyle });
     
     // Create confirmation modal
     const confirmModal = document.createElement('div');
@@ -819,7 +704,7 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
         <p class="confirm-warning">Ta akcja nie może zostać cofnięta.</p>
         <div class="confirm-buttons">
           <button class="cancel-btn" onclick="this.closest('.confirm-modal-overlay').remove()">Anuluj</button>
-          <button class="delete-confirm-btn" data-id="${id}" data-type="${type}" data-reservation-id="${reservationId || ''}">Tak, usuń</button>
+          <button class="delete-confirm-btn" data-id="${id}" data-type="${type}">Tak, usuń</button>
         </div>
       </div>
     `;
@@ -983,9 +868,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
       deleteBtn.addEventListener('click', async () => {
         const id = deleteBtn.getAttribute('data-id');
         const type = deleteBtn.getAttribute('data-type');
-        const reservationId = deleteBtn.getAttribute('data-reservation-id');
         
-        console.log('🗑️ Delete button clicked with:', { id, type, reservationId });
+        console.log('🗑️ Delete button clicked with:', { id, type });
         
         if (!id || !type) {
           console.error('Missing id or type for deletion');
@@ -1002,10 +886,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
             console.log('🗑️ Deleting room reservation with ID:', id);
             await this.reservationsService.deleteRoomReservation(id).toPromise();
           } else {
-            // For fitness classes, use reservationId if available, otherwise use id
-            const actualReservationId = reservationId || id;
-            console.log('🗑️ Deleting class reservation with ID:', actualReservationId);
-            await this.reservationsService.deleteClassReservation(actualReservationId).toPromise();
+            console.log('🗑️ Deleting class reservation with ID:', id);
+            await this.reservationsService.deleteClassReservation(id).toPromise();
           }
           console.log('✅ Reservation deleted successfully in background');
           

@@ -42,7 +42,7 @@ export class UserManagementComponent implements OnInit {
   
   availableRoles = [
     { value: 'admin', label: 'Administrator', icon: '👑' },
-    { value: 'trainer', label: 'Trener', icon: '💪' },
+    { value: 'trener', label: 'Trener', icon: '💪' },
     { value: 'receptionist', label: 'Recepcjonista', icon: '🏢' },
     { value: 'regular', label: 'Użytkownik', icon: '👤' }
   ];
@@ -86,6 +86,27 @@ export class UserManagementComponent implements OnInit {
       case 'regular': return 'basic';
       default: return 'basic';
     }
+  }
+
+  getAvailableRolesForUser(currentUser: User | null): typeof this.availableRoles {
+    if (!currentUser) {
+      return [];
+    }
+    
+    // Admin can assign all roles
+    if (currentUser.Role === 'admin') {
+      return this.availableRoles;
+    }
+    
+    // Receptionist can only assign regular and trener roles
+    if (currentUser.Role === 'receptionist') {
+      return this.availableRoles.filter(role => 
+        role.value === 'regular' || role.value === 'trener'
+      );
+    }
+    
+    // Other roles cannot assign roles
+    return [];
   }
 
   startEditing(user: UserWithRole): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, tap, combineLatest } from 'rxjs';
+import { map, Observable, tap, combineLatest, shareReplay } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -133,18 +133,23 @@ export class HomeComponent implements OnInit {
   ) {
     this.currentUser$ = this.userService.currentUser$;
     
-    // Initialize admin metrics with real data
-    this.totalUsers$ = this.userService.getSystemMetrics().pipe(
-      map(metrics => metrics.totalUsers)
+    // Initialize admin metrics with real data - shared single call
+    const systemMetrics$ = this.userService.getSystemMetrics().pipe(
+      tap(metrics => console.log('System metrics received:', metrics)),
+      shareReplay(1) // Cache the result and replay to multiple subscribers
     );
-    this.totalReservations$ = this.userService.getSystemMetrics().pipe(
-      map(metrics => metrics.totalReservations)
+    
+    this.totalUsers$ = systemMetrics$.pipe(
+      map(metrics => metrics.totalUsers || 0)
     );
-    this.totalClasses$ = this.userService.getSystemMetrics().pipe(
-      map(metrics => metrics.totalClasses)
+    this.totalReservations$ = systemMetrics$.pipe(
+      map(metrics => metrics.totalReservations || 0)
     );
-    this.totalRooms$ = this.userService.getSystemMetrics().pipe(
-      map(metrics => metrics.totalRooms)
+    this.totalClasses$ = systemMetrics$.pipe(
+      map(metrics => metrics.totalClasses || 0)
+    );
+    this.totalRooms$ = systemMetrics$.pipe(
+      map(metrics => metrics.totalRooms || 0)
     );
     
     // Initialize trainer data - show only the next upcoming class organized by trainer

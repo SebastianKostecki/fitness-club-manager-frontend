@@ -86,15 +86,21 @@ export class ReservationsService {
     this.loading.next(true);
     this.error.next(null);
     this.success.next(false);
-    const url = `${environment.apiUrl}/reservations/raw`;
+    const url = `${environment.apiUrl}/reservations/all`;
     return this.http.get<any[]>(url).pipe(
       tap(res => {
-        console.log('Dane z backendu:', res);
+        console.log('🎫 Dane z backendu (all reservations):', res.length, 'rekordów');
+        console.log('🔍 Pierwszy rekord:', res[0]);
+        console.log('📊 Typy rezerwacji:', res.map(r => r.reservation_type).reduce((acc, type) => {
+          acc[type] = (acc[type] || 0) + 1;
+          return acc;
+        }, {}));
         this.items.next(res);
         this.success.next(true);
       }),
       finalize(() => this.loading.next(false)),
       catchError(err => {
+        console.error('❌ Błąd pobierania rezerwacji:', err);
         this.error.next(err);
         return EMPTY;
       })

@@ -71,4 +71,47 @@ export class ReservationsComponent implements OnInit {
       default: return status;
     }
   }
+
+  getReservationType(type: string): string {
+    switch (type) {
+      case 'class': return 'Rezerwacja na zajęcia fitness';
+      case 'room': return 'Rezerwacja sali';
+      default: return 'Nieznany typ rezerwacji';
+    }
+  }
+
+  getReservationTypeIcon(type: string): string {
+    switch (type) {
+      case 'class': return '🏃‍♂️';
+      case 'room': return '🏢';
+      default: return '❓';
+    }
+  }
+
+  getReservationTitle(element: any): string {
+    if (element.reservation_type === 'class') {
+      return element.fitness_class?.Title || element.title || '⚠️ Zajęcia usunięte';
+    } else if (element.reservation_type === 'room') {
+      return element.room_reservation?.Title || element.title || '⚠️ Cel usunięty';
+    }
+    return element.title || '⚠️ Brak tytułu';
+  }
+
+  getLocation(element: any): string {
+    if (element.reservation_type === 'class') {
+      return element.fitness_class?.room?.Location || element.room_location || '⚠️ Sala usunięta';
+    } else if (element.reservation_type === 'room') {
+      return element.room_reservation?.room?.Location || element.room_location || '⚠️ Sala usunięta';
+    }
+    return element.room_location || '⚠️ Brak lokalizacji';
+  }
+
+  getRoomName(element: any): string {
+    if (element.reservation_type === 'class') {
+      return element.fitness_class?.room?.RoomName || element.room_name || '⚠️ Sala usunięta';
+    } else if (element.reservation_type === 'room') {
+      return element.room_reservation?.room?.RoomName || element.room_name || '⚠️ Sala usunięta';
+    }
+    return element.room_name || '⚠️ Brak nazwy sali';
+  }
 }

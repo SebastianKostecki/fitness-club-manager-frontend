@@ -34,10 +34,10 @@ export class ChangeRoleDialogComponent {
 
   getRoleDisplayName(role: string): string {
     switch (role) {
-      case 'regular': return 'Regular';
+      case 'regular': return 'Użytkownik';
       case 'trener': return 'Trener';
-      case 'receptionist': return 'Receptionist';
-      case 'admin': return 'Admin';
+      case 'receptionist': return 'Recepcjonista';
+      case 'admin': return 'Administrator';
       default: return role;
     }
   }

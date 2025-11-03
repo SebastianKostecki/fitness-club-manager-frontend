@@ -45,16 +45,18 @@
               </div>
               
               <ng-template #editingRole>
-                <mat-form-field appearance="outline" class="role-select">
-                  <mat-select [(value)]="user.newRole" placeholder="Wybierz rolę">
-                    <mat-option *ngFor="let role of availableRoles" [value]="role.value">
-                      <span class="role-option">
-                        <span class="role-icon">{{ role.icon }}</span>
-                        {{ role.label }}
-                      </span>
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <div *ngIf="currentUser$ | async as currentUser">
+                  <mat-form-field appearance="outline" class="role-select">
+                    <mat-select [(value)]="user.newRole" placeholder="Wybierz rolę">
+                      <mat-option *ngFor="let role of getAvailableRolesForUser(currentUser)" [value]="role.value">
+                        <span class="role-option">
+                          <span class="role-icon">{{ role.icon }}</span>
+                          {{ role.label }}
+                        </span>
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </ng-template>
             </td>
           </ng-container>
