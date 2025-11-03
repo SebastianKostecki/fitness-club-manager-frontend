@@ -9,6 +9,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FitnessClassesService } from './services/fitness-classes.service';
 import { UserService } from '../../../../shared/services/user.service';
+import { RoomsService } from '../rooms/services/rooms.service';
 import { AddEditClassDialogComponent } from './components/add-edit-class-dialog/add-edit-class-dialog.component';
 import { Observable, map } from 'rxjs';
 
@@ -61,6 +62,7 @@ export class FitnessClassesComponent implements OnInit {
   constructor(
     private fitnessClassesService: FitnessClassesService,
     private userService: UserService,
+    private roomsService: RoomsService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {
@@ -78,6 +80,7 @@ export class FitnessClassesComponent implements OnInit {
 
   ngOnInit(): void {
     this.fitnessClassesService.getClasses().subscribe();
+    this.roomsService.getRooms().subscribe(); // Load rooms for the "Add Class" dialog
   }
 
   bookClass(fitnessClass: FitnessClass): void {
