@@ -35,11 +35,7 @@ export class UserService {
   }
 
   getSystemMetrics(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/users/metrics`).pipe(
-      tap(metrics => {
-        // Metrics loaded successfully
-      })
-    );
+    return this.http.get<any>(`${environment.apiUrl}/users/metrics`);
   }
 
   clearUser(): void {
