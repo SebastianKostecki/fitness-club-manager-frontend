@@ -1,4 +1,4 @@
-﻿export const environment = {
+export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080'
+  apiUrl: 'https://fitness-club-manager-backend.onrender.com'
 };

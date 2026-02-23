@@ -4,7 +4,7 @@
 
     <mat-form-field class="w-100 mb-2">
       <mat-label>Sala</mat-label>
-      <mat-select formControlName="RoomID" [disabled]="data?.isEdit">
+      <mat-select formControlName="RoomID">
         <mat-option *ngFor="let room of rooms" [value]="room.RoomID">
           {{ room.RoomName }}
         </mat-option>
@@ -13,7 +13,7 @@
 
     <mat-form-field class="w-100 mb-2">
       <mat-label>Sprzęt</mat-label>
-      <mat-select formControlName="EquipmentID" [disabled]="data?.isEdit">
+      <mat-select formControlName="EquipmentID">
         <mat-option *ngFor="let eq of equipments" [value]="eq.EquipmentID">
           {{ eq.EquipmentName }}
         </mat-option>

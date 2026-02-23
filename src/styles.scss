@@ -12,27 +12,18 @@ app-root, .app-container {
   backdrop-filter: none !important; 
 }
 
-/* CDK Overlay Container - Ensure correct stacking order */
-.cdk-overlay-container { 
-  z-index: 1000 !important; 
-}
 
-.cdk-overlay-backdrop { 
-  z-index: 1999 !important; 
-}
-
-.cdk-global-overlay-wrapper,
-.cdk-overlay-pane { 
-  z-index: 2001 !important; 
-  position: absolute !important; 
-  pointer-events: auto !important; 
-}
 
 /* Modal Styles */
 .mat-mdc-dialog-container {
   max-width: 90vw !important;
   max-height: 90vh !important;
-  overflow: auto !important;
+  overflow: visible !important; /* Changed from auto to visible */
+}
+
+/* Angular Material select panel z-index fix */
+.mat-mdc-select-panel {
+  z-index: 3000 !important;
 }
 
 /* Custom Dialog Styles */

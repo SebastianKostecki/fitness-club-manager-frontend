@@ -54,6 +54,9 @@ export class AddEditRoomEquipmentsDialogComponent implements OnInit {
 
     if (this.data?.isEdit) {
       this.formGroup.patchValue(this.data.roomEquipment);
+      // Disable RoomID and EquipmentID in edit mode
+      this.formGroup.get('RoomID')?.disable();
+      this.formGroup.get('EquipmentID')?.disable();
     }
 
     this.roomEquipmentsService.addSuccess.subscribe(success => {
