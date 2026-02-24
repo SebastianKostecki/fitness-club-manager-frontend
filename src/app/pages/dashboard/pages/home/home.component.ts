@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, tap, combineLatest, shareReplay } from 'rxjs';
+import { map, Observable, tap, combineLatest, shareReplay, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -133,24 +133,11 @@ export class HomeComponent implements OnInit {
   ) {
     this.currentUser$ = this.userService.currentUser$;
     
-    // Initialize admin metrics with real data - shared single call
-    const systemMetrics$ = this.userService.getSystemMetrics().pipe(
-      tap(metrics => console.log('System metrics received:', metrics)),
-      shareReplay(1) // Cache the result and replay to multiple subscribers
-    );
-    
-    this.totalUsers$ = systemMetrics$.pipe(
-      map(metrics => metrics.totalUsers || 0)
-    );
-    this.totalReservations$ = systemMetrics$.pipe(
-      map(metrics => metrics.totalReservations || 0)
-    );
-    this.totalClasses$ = systemMetrics$.pipe(
-      map(metrics => metrics.totalClasses || 0)
-    );
-    this.totalRooms$ = systemMetrics$.pipe(
-      map(metrics => metrics.totalRooms || 0)
-    );
+    // Initialize empty metrics - will be loaded conditionally in ngOnInit
+    this.totalUsers$ = of(0);
+    this.totalReservations$ = of(0); 
+    this.totalClasses$ = of(0);
+    this.totalRooms$ = of(0);
     
     // Initialize trainer data - show only the next upcoming class organized by trainer
     this.myClasses$ = this.formattedEvents$.pipe(
@@ -220,15 +207,43 @@ export class HomeComponent implements OnInit {
     this.reservationsService.getCalendarEvents().subscribe();
     this.userService.getCurrentUser().subscribe();
     
-    // Load system metrics for admin
-    this.userService.getSystemMetrics().subscribe();
+    // Load system metrics only for admin/receptionist
+    this.currentUser$.subscribe(user => {
+      if (user && (user.Role.toLowerCase() === 'admin' || user.Role.toLowerCase() === 'receptionist')) {
+        console.log('Loading system metrics for', user.Role);
+        
+        // Load metrics for admin/receptionist
+        const systemMetrics$ = this.userService.getSystemMetrics().pipe(
+          tap(metrics => console.log('System metrics received:', metrics)),
+          shareReplay(1)
+        );
+        
+        this.totalUsers$ = systemMetrics$.pipe(
+          map(metrics => metrics.totalUsers || 0)
+        );
+        this.totalReservations$ = systemMetrics$.pipe(
+          map(metrics => metrics.totalReservations || 0)
+        );
+        this.totalClasses$ = systemMetrics$.pipe(
+          map(metrics => metrics.totalClasses || 0)
+        );
+        this.totalRooms$ = systemMetrics$.pipe(
+          map(metrics => metrics.totalRooms || 0)
+        );
+        
+        // Subscribe to actually trigger the API call
+        systemMetrics$.subscribe();
+      } else if (user) {
+        console.log('Skipping system metrics for', user.Role, '- not admin/receptionist');
+      }
+    });
   }
 
   getRoleDisplayName(role: string): string {
     const roleNames: { [key: string]: string } = {
       'admin': 'Administrator',
       'receptionist': 'Recepcjonista',
-      'trainer': 'Trener',
+      'trener': 'Trener',
       'regular': 'Użytkownik'
     };
     return roleNames[role.toLowerCase()] || role;
@@ -238,7 +253,7 @@ export class HomeComponent implements OnInit {
     const roleIcons: { [key: string]: string } = {
       'admin': '👑',
       'receptionist': '🏢',
-      'trainer': '💪',
+      'trener': '💪',
       'regular': '👤'
     };
     return roleIcons[role.toLowerCase()] || '👤';
@@ -248,8 +263,8 @@ export class HomeComponent implements OnInit {
     const roleDescriptions: { [key: string]: string } = {
       'admin': 'Pełny dostęp do systemu',
       'receptionist': 'Zarządzanie rezerwacjami',
-      'trainer': 'Prowadzenie zajęć',
-      'regular': 'Członek klubu fitness'
+      'trener': 'Prowadzenie zajęć',
+      'regular': 'Użytkownik systemu'
     };
     return roleDescriptions[role.toLowerCase()] || 'Użytkownik systemu';
   }

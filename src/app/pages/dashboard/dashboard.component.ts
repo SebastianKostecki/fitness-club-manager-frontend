@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
       name: 'Domowa',
       icon: 'home',
       path: DashboardRouting.home,
-      roles: ['admin', 'trainer', 'regular', 'receptionist']
+      roles: ['admin', 'trener', 'regular', 'receptionist']
     },
     {
       name: 'Użytkownicy',
@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
       name: "Sale",
       icon: "domain",
       path: DashboardRouting.rooms,
-      roles: ['admin', 'trainer', 'regular', 'receptionist']
+      roles: ['admin', 'trener', 'regular', 'receptionist']
     },
     {
       name: "Sprzęt",
@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
       name:"Zajęcia",
       icon: "fitness_center",
       path: DashboardRouting.fitnessClasses,
-      roles: ['admin', 'trainer', 'receptionist']
+      roles: ['admin', 'trener', 'receptionist']
     },
     {
      name: 'Rezerwacje',
