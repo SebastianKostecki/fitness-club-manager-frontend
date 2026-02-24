@@ -44,7 +44,12 @@
               
               <div class="detail-item">
                 <mat-icon>people</mat-icon>
-                <span>Pojemność: {{ classItem.Capacity }} osób</span>
+                <span>Miejsca: {{ classItem.availableSpots || 0 }}/{{ classItem.Capacity }}</span>
+              </div>
+              
+              <div class="detail-item" *ngIf="classItem.currentReservations > 0">
+                <mat-icon>event_seat</mat-icon>
+                <span>Zapisanych: {{ classItem.currentReservations }}</span>
               </div>
               
               <div class="detail-item" *ngIf="classItem.TrainerID">
@@ -106,7 +111,12 @@
               
               <div class="detail-item">
                 <mat-icon>people</mat-icon>
-                <span>Pojemność: {{ classItem.Capacity }} osób</span>
+                <span>Miejsca: {{ classItem.availableSpots || 0 }}/{{ classItem.Capacity }}</span>
+              </div>
+              
+              <div class="detail-item" *ngIf="classItem.currentReservations > 0">
+                <mat-icon>event_seat</mat-icon>
+                <span>Zapisanych: {{ classItem.currentReservations }}</span>
               </div>
               
               <div class="detail-item" *ngIf="classItem.TrainerID">
@@ -171,7 +181,12 @@
               
               <div class="detail-item">
                 <mat-icon>people</mat-icon>
-                <span>Pojemność: {{ classItem.Capacity }} osób</span>
+                <span>Miejsca: {{ classItem.availableSpots || 0 }}/{{ classItem.Capacity }}</span>
+              </div>
+              
+              <div class="detail-item" *ngIf="classItem.currentReservations > 0">
+                <mat-icon>event_seat</mat-icon>
+                <span>Zapisanych: {{ classItem.currentReservations }}</span>
               </div>
               
               <div class="detail-item" *ngIf="classItem.TrainerID">
