@@ -392,7 +392,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
             await this.reservationsService.deleteRoomReservation(id).toPromise();
           } else if (type === 'trainer_class') {
             console.log('🗑️ Deleting fitness class with ID:', id);
-            await this.fitnessClassesService.deleteClass(parseInt(id)).toPromise();
+            const numericId = id.match(/\d+$/)?.[0] || id; // Extract number from end of string
+            await this.fitnessClassesService.deleteClass(parseInt(numericId)).toPromise();
           } else {
             console.log('🗑️ Deleting class reservation with ID:', id);
             await this.reservationsService.deleteClassReservation(id).toPromise();
@@ -654,7 +655,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
               await this.reservationsService.deleteRoomReservation(id).toPromise();
             } else if (type === 'trainer_class') {
               console.log('🗑️ Deleting fitness class with ID:', id);
-              await this.fitnessClassesService.deleteClass(parseInt(id)).toPromise();
+              const numericId = id.match(/\d+$/)?.[0] || id; // Extract number from end of string
+              await this.fitnessClassesService.deleteClass(parseInt(numericId)).toPromise();
             } else {
               console.log('🗑️ Deleting class reservation with ID:', id);
               await this.reservationsService.deleteClassReservation(id).toPromise();
@@ -909,7 +911,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
             await this.reservationsService.deleteRoomReservation(id).toPromise();
           } else if (type === 'trainer_class') {
             console.log('🗑️ Deleting fitness class with ID:', id);
-            await this.fitnessClassesService.deleteClass(parseInt(id)).toPromise();
+            const numericId = id.match(/\d+$/)?.[0] || id; // Extract number from end of string
+            await this.fitnessClassesService.deleteClass(parseInt(numericId)).toPromise();
           } else {
             console.log('🗑️ Deleting class reservation with ID:', id);
             await this.reservationsService.deleteClassReservation(id).toPromise();
