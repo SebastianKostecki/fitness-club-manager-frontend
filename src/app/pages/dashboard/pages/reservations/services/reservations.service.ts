@@ -228,7 +228,7 @@ export class ReservationsService {
     this.deleteLoading.next(true);
     this.deleteError.next(null);
     this.deleteSuccess.next(false);
-    const url = `${environment.apiUrl}/calendar/reservations/${reservationId}`;
+    const url = `${environment.apiUrl}/reservations/${reservationId}`;
     return this.http.delete(url).pipe(
       tap(() => {
         this.deleteSuccess.next(true);
