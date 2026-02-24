@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange
 import { CommonModule } from '@angular/common';
 // Removed Material Dialog imports - using simple HTML modal instead
 import { ReservationsService } from '../../../pages/dashboard/pages/reservations/services/reservations.service';
+import { FitnessClassesService } from '../../../pages/dashboard/pages/fitness-classes/services/fitness-classes.service';
 // Removed ReservationsModalComponent import - using simple HTML modal instead
 
 export interface CalendarEvent {
@@ -50,7 +51,8 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
   ];
 
   constructor(
-    private reservationsService: ReservationsService
+    private reservationsService: ReservationsService,
+    private fitnessClassesService: FitnessClassesService
   ) {}
 
   ngOnInit() {
@@ -388,6 +390,9 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
           if (type === 'room_reservation') {
             console.log('🗑️ Deleting room reservation with ID:', id);
             await this.reservationsService.deleteRoomReservation(id).toPromise();
+          } else if (type === 'trainer_class') {
+            console.log('🗑️ Deleting fitness class with ID:', id);
+            await this.fitnessClassesService.deleteClass(parseInt(id)).toPromise();
           } else {
             console.log('🗑️ Deleting class reservation with ID:', id);
             await this.reservationsService.deleteClassReservation(id).toPromise();
@@ -395,7 +400,14 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
           console.log('✅ Reservation deleted successfully in background');
           
           // Update the events array to remove the deleted reservation
-          const deletedEventId = type === 'room_reservation' ? `room-${id}` : `class-${id}`;
+          let deletedEventId: string;
+          if (type === 'room_reservation') {
+            deletedEventId = `room-${id}`;
+          } else if (type === 'trainer_class') {
+            deletedEventId = `trainer-${id}`;
+          } else {
+            deletedEventId = `class-${id}`;
+          }
           const originalEvents = [...this.events];
           this.events = originalEvents.filter(event => event.id !== deletedEventId);
           
@@ -640,6 +652,9 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
             if (type === 'room_reservation') {
               console.log('🗑️ Deleting room reservation with ID:', id);
               await this.reservationsService.deleteRoomReservation(id).toPromise();
+            } else if (type === 'trainer_class') {
+              console.log('🗑️ Deleting fitness class with ID:', id);
+              await this.fitnessClassesService.deleteClass(parseInt(id)).toPromise();
             } else {
               console.log('🗑️ Deleting class reservation with ID:', id);
               await this.reservationsService.deleteClassReservation(id).toPromise();
@@ -647,7 +662,14 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
             console.log('✅ Reservation deleted successfully in background');
             
             // Update the events array to remove the deleted reservation
-            const deletedEventId = type === 'room_reservation' ? `room-${id}` : `class-${id}`;
+            let deletedEventId: string;
+          if (type === 'room_reservation') {
+            deletedEventId = `room-${id}`;
+          } else if (type === 'trainer_class') {
+            deletedEventId = `trainer-${id}`;
+          } else {
+            deletedEventId = `class-${id}`;
+          }
             const originalEvents = [...this.events];
             this.events = originalEvents.filter(event => event.id !== deletedEventId);
             
@@ -885,6 +907,9 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
           if (type === 'room_reservation') {
             console.log('🗑️ Deleting room reservation with ID:', id);
             await this.reservationsService.deleteRoomReservation(id).toPromise();
+          } else if (type === 'trainer_class') {
+            console.log('🗑️ Deleting fitness class with ID:', id);
+            await this.fitnessClassesService.deleteClass(parseInt(id)).toPromise();
           } else {
             console.log('🗑️ Deleting class reservation with ID:', id);
             await this.reservationsService.deleteClassReservation(id).toPromise();
@@ -892,7 +917,14 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
           console.log('✅ Reservation deleted successfully in background');
           
           // Update the events array to remove the deleted reservation
-          const deletedEventId = type === 'room_reservation' ? `room-${id}` : `class-${id}`;
+          let deletedEventId: string;
+          if (type === 'room_reservation') {
+            deletedEventId = `room-${id}`;
+          } else if (type === 'trainer_class') {
+            deletedEventId = `trainer-${id}`;
+          } else {
+            deletedEventId = `class-${id}`;
+          }
           const originalEvents = [...this.events];
           this.events = originalEvents.filter(event => event.id !== deletedEventId);
           
