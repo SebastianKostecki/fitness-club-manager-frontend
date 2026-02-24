@@ -47,9 +47,9 @@
                 <span>Miejsca: {{ classItem.availableSpots || 0 }}/{{ classItem.Capacity }}</span>
               </div>
               
-              <div class="detail-item" *ngIf="classItem.currentReservations > 0">
+              <div class="detail-item" *ngIf="(classItem?.currentReservations || 0) > 0">
                 <mat-icon>event_seat</mat-icon>
-                <span>Zapisanych: {{ classItem.currentReservations }}</span>
+                <span>Zapisanych: {{ classItem?.currentReservations || 0 }}</span>
               </div>
               
               <div class="detail-item" *ngIf="classItem.TrainerID">
@@ -114,9 +114,9 @@
                 <span>Miejsca: {{ classItem.availableSpots || 0 }}/{{ classItem.Capacity }}</span>
               </div>
               
-              <div class="detail-item" *ngIf="classItem.currentReservations > 0">
+              <div class="detail-item" *ngIf="(classItem?.currentReservations || 0) > 0">
                 <mat-icon>event_seat</mat-icon>
-                <span>Zapisanych: {{ classItem.currentReservations }}</span>
+                <span>Zapisanych: {{ classItem?.currentReservations || 0 }}</span>
               </div>
               
               <div class="detail-item" *ngIf="classItem.TrainerID">
@@ -184,9 +184,9 @@
                 <span>Miejsca: {{ classItem.availableSpots || 0 }}/{{ classItem.Capacity }}</span>
               </div>
               
-              <div class="detail-item" *ngIf="classItem.currentReservations > 0">
+              <div class="detail-item" *ngIf="(classItem?.currentReservations || 0) > 0">
                 <mat-icon>event_seat</mat-icon>
-                <span>Zapisanych: {{ classItem.currentReservations }}</span>
+                <span>Zapisanych: {{ classItem?.currentReservations || 0 }}</span>
               </div>
               
               <div class="detail-item" *ngIf="classItem.TrainerID">
