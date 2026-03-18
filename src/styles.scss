@@ -236,6 +236,12 @@ body {
 }
 
 /* Modal overlay veil - class-based instead of hover */
+body.modal-open {
+  /* Zapobiega skakaniu tła przy otwartym modalu (rezerwa na scrollbar) */
+  overflow: hidden !important;
+  padding-right: 15px !important;
+}
+
 .modal-open {
   .mat-drawer-container,
   .min-vh-100,
