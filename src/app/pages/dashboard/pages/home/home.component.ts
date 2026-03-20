@@ -12,6 +12,7 @@ import { ReservationsService } from '../reservations/services/reservations.servi
 import { CustomCalendarComponent, CalendarEvent } from '../../../../shared/components/custom-calendar/custom-calendar.component';
 import { UserService, User } from '../../../../shared/services/user.service';
 import { RoomsService } from '../rooms/services/rooms.service';
+import { MoveToBodyDirective } from '../../../../shared/directives/move-to-body.directive';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,8 @@ import { RoomsService } from '../rooms/services/rooms.service';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    CustomCalendarComponent
+    CustomCalendarComponent,
+    MoveToBodyDirective
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -462,12 +464,10 @@ export class HomeComponent implements OnInit {
   // Become trainer modal methods
   openBecomeTrainerModal(): void {
     this.showBecomeTrainerModal = true;
-    document.body.classList.add('modal-open');
   }
 
   closeBecomeTrainerModal(): void {
     this.showBecomeTrainerModal = false;
-    document.body.classList.remove('modal-open');
   }
 
   bookClass(classId: number): void {
