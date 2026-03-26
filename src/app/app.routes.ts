@@ -7,6 +7,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { dashboardRoutes } from './pages/dashboard/dashboard.routes';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { LoginGuard } from './shared/guards/login.guard';
+import { CancelSuccessComponent } from './pages/cancel-success/cancel-success.component';
 
 export const routes: Routes = [
     {
@@ -33,6 +34,11 @@ export const routes: Routes = [
         canActivate: [LoginGuard],
         data: { breadcrumb: 'Rejestracja' },
         component: RegisterComponent
+      },
+      {
+        path: AppRouting.cancelSuccess,
+        data: { breadcrumb: 'Anulowano rezerwację' },
+        component: CancelSuccessComponent
       },
 ];
 

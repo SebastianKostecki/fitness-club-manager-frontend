@@ -1,0 +1,20 @@
+<div class="wrap">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Rezerwacja anulowana</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Twoja rezerwacja została anulowana. Dziękujemy — miejsce jest znowu dostępne dla innych.</p>
+      @if (reservationId) {
+        <p class="meta">Numer rezerwacji (zajęcia): {{ reservationId }}</p>
+      }
+      @if (roomReservationId) {
+        <p class="meta">Numer rezerwacji sali: {{ roomReservationId }}</p>
+      }
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <a mat-button color="primary" routerLink="/">Strona główna</a>
+      <a mat-raised-button color="primary" routerLink="/login">Logowanie</a>
+    </mat-card-actions>
+  </mat-card>
+</div>

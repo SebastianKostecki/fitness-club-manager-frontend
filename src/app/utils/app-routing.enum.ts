@@ -3,5 +3,6 @@ export enum AppRouting {
     dashboard = 'dashboard',
     login = 'login',
     register = 'register',
+    cancelSuccess = 'cancel-success',
   }
   
